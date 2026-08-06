@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
    ============================================================ */
 const NAV_HTML = `
 <nav class="nav">
-  <a href="index.html" class="brand"><img src="assets/logo.jpg" alt="Blue Gems and Jewels" class="brand-logo"></a>
+  <a href="index.html" class="brand"><img src="assets/logo.png" alt="Blue Gems and Jewels" class="brand-logo"></a>
   <div class="nav-links">
     <a href="about.html" data-key="about">About</a>
     <a href="manufacturing.html" data-key="manufacturing">Manufacturing</a>
