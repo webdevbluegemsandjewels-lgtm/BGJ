@@ -7,10 +7,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const footMount = document.getElementById('site-footer');
   if (navMount) navMount.innerHTML = NAV_HTML;
   if (footMount) footMount.innerHTML = FOOTER_HTML;
-  /* ---- active nav link ---- */
+  /* ---- active nav link (data-key may hold several page names, space-separated) ---- */
   const page = document.body.getAttribute('data-page');
-  document.querySelectorAll('.nav-links a, .mobile-panel a').forEach(a => {
-    if (a.getAttribute('data-key') === page) a.classList.add('active');
+  document.querySelectorAll('.nav-links a[data-key], .mobile-panel a[data-key]').forEach(a => {
+    if (a.getAttribute('data-key').split(' ').includes(page)) a.classList.add('active');
   });
   /* ---- nav scroll state ---- */
   const nav = document.querySelector('.nav');
@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const btn = form.querySelector('button[type="submit"]');
       const original = btn.textContent;
       btn.textContent = 'Message Sent ✓';
-      btn.style.background = 'var(--gold-300)';
+      btn.style.background = 'var(--gold-400)';
       form.reset();
       setTimeout(() => { btn.textContent = original; }, 3200);
     });
@@ -95,12 +95,22 @@ const NAV_HTML = `
   <a href="index.html" class="brand"><img src="assets/logo.png" alt="Blue Gems and Jewels" class="brand-logo"></a>
   <div class="nav-links">
     <a href="about.html" data-key="about">About</a>
-    <a href="manufacturing.html" data-key="manufacturing">Manufacturing</a>
-    <a href="craftsmanship.html" data-key="craftsmanship">Craftsmanship</a>
-    <a href="workforce.html" data-key="workforce">Workforce</a>
-    <a href="certifications.html" data-key="certifications">Certifications</a>
-    <a href="events.html" data-key="events">Events</a>
+    <div class="nav-drop">
+      <a href="manufacturing.html" data-key="manufacturing craftsmanship workforce">Manufacturing<span class="caret">&#9662;</span></a>
+      <div class="nav-drop-menu">
+        <a href="manufacturing.html">Manufacturing Process</a>
+        <a href="craftsmanship.html">Design &amp; Craftsmanship</a>
+        <a href="workforce.html">Workforce &amp; Machinery</a>
+      </div>
+    </div>
     <a href="products.html" data-key="products">Products</a>
+    <div class="nav-drop">
+      <a href="certifications.html" data-key="certifications events">Company<span class="caret">&#9662;</span></a>
+      <div class="nav-drop-menu">
+        <a href="certifications.html">Certifications</a>
+        <a href="events.html">Events &amp; Exhibitions</a>
+      </div>
+    </div>
     <a href="contact.html" class="nav-cta" data-key="contact">Visit Factory</a>
   </div>
   <div class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></div>
@@ -108,12 +118,18 @@ const NAV_HTML = `
 <div class="mobile-panel">
   <a href="index.html">Home</a>
   <a href="about.html">About</a>
-  <a href="manufacturing.html">Manufacturing</a>
-  <a href="craftsmanship.html">Craftsmanship</a>
-  <a href="workforce.html">Workforce</a>
-  <a href="certifications.html">Certifications</a>
-  <a href="events.html">Events</a>
+  <div class="mp-group">
+    <span class="mp-heading">Manufacturing</span>
+    <a href="manufacturing.html">Process</a>
+    <a href="craftsmanship.html">Craftsmanship</a>
+    <a href="workforce.html">Workforce &amp; Machinery</a>
+  </div>
   <a href="products.html">Products</a>
+  <div class="mp-group">
+    <span class="mp-heading">Company</span>
+    <a href="certifications.html">Certifications</a>
+    <a href="events.html">Events &amp; Exhibitions</a>
+  </div>
   <a href="contact.html">Contact</a>
 </div>`;
 /* ============================================================
@@ -124,8 +140,8 @@ const FOOTER_HTML = `
   <div class="wrap">
     <div class="footer-grid">
       <div>
-        <div class="brand" style="margin-bottom:1.2rem;"><b>Blue Gems &amp; Jewels</b><small>Since 1996 &middot; Mumbai</small></div>
-        <p class="muted" style="max-width:320px; font-size:.9rem;">Fine jewellery manufacturing for independent retailers across India — one collection, one conversation, one relationship at a time.</p>
+        <div class="brand" style="margin-bottom:1.2rem;"><b>Blue Gems &amp; Jewels</b></div>
+        <p class="muted" style="max-width:320px; font-size:.9rem;">Fine jewellery manufacturing for independent retailers across India.</p>
       </div>
       <div>
         <h4>Explore</h4>
