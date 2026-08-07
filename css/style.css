@@ -156,7 +156,7 @@ p{ margin:0; }
   text-shadow:none; transition:color .3s!important;
 }
 .nav-cta:hover{ color:var(--gold-500)!important; }
-.nav-toggle{ display:none; flex-direction:column; gap:5px; cursor:pointer; z-index:1001; }
+.nav-toggle{ display:none; flex-direction:column; gap:5px; cursor:pointer; z-index:1001; padding:12px; margin:-12px; }
 .nav-toggle span{ width:24px; height:1px; background:#fff; box-shadow:0 1px 6px rgba(0,0,0,.5); transition:transform .3s,opacity .3s,background .3s; }
 .nav.scrolled .nav-toggle span{ background:var(--ivory); box-shadow:none; }
 .mobile-panel{
@@ -169,12 +169,16 @@ p{ margin:0; }
 @media(max-width:900px){
   .nav-links{ display:none; }
   .nav-toggle{ display:flex; }
+  .nav{ padding:1.1rem 5vw; }
+  .nav.scrolled{ padding:.8rem 5vw; }
+  .brand-logo{ height:48px; }
+  .nav.scrolled .brand-logo{ height:40px; }
 }
 /* ============================================================
    HERO
    ============================================================ */
 .hero{
-  position:relative; min-height:100vh; display:flex; align-items:center; justify-content:center;
+  position:relative; min-height:100vh; min-height:100dvh; display:flex; align-items:center; justify-content:center;
   overflow:hidden; text-align:center; isolation:isolate;
 }
 .hero-bg{
@@ -338,7 +342,7 @@ p{ margin:0; }
 /* ============================================================
    PAGE HERO (inner pages, shorter)
    ============================================================ */
-.page-hero{ min-height:72vh; }
+.page-hero{ min-height:72vh; min-height:72dvh; }
 .page-hero h1{ font-size:clamp(2.2rem,5.4vw,4.2rem); }
 .breadcrumb{ font-size:.7rem; letter-spacing:.2em; text-transform:uppercase; color:var(--ivory-dim); margin-bottom:1.4rem; }
 .breadcrumb .gold{ color:var(--gold-400); }
@@ -351,11 +355,29 @@ p{ margin:0; }
   .grid-2{ grid-template-columns:1fr; }
 }
 @media(max-width:640px){
+  .wrap{ padding:0 5.5vw; }
   .grid-4,.grid-3{ grid-template-columns:1fr; }
+  .grid{ gap:1.6rem !important; }
+  /* image galleries: shrink tiles and flow 2-4 per row instead of stacking full-width */
+  .grid-4.gallery,.grid-3.gallery{ grid-template-columns:repeat(auto-fit,minmax(130px,1fr)) !important; gap:.8rem !important; }
+  .gallery .tile-label{ left:.7rem; bottom:.7rem; right:.7rem; font-size:.82rem; }
+  .gallery .tile-label small{ font-size:.55rem; letter-spacing:.14em; margin-bottom:.3rem; }
+  .gallery p{ font-size:.82rem; }
+  /* "What We Manufacture" — locked 2x2 puzzle mosaic on mobile */
+  .puzzle{ grid-template-columns:repeat(2,1fr) !important; gap:3px !important; }
+  .puzzle .tile{ aspect-ratio:1/1; border-radius:0; border:none; }
+  .puzzle .tile-label{ left:.6rem; bottom:.6rem; right:.6rem; font-size:.78rem; }
+  .puzzle .tile-label small{ font-size:.52rem; letter-spacing:.12em; margin-bottom:.25rem; }
   .step{ grid-template-columns:44px 1fr; gap:1.3rem; }
   .step-dot{ width:44px; height:44px; font-size:.95rem; }
   .process-rail{ left:21px; }
-  .footer-grid{ grid-template-columns:1fr; }
+  .footer-grid{ grid-template-columns:1fr; gap:2.4rem; }
+  .footer-bottom{ flex-direction:column; align-items:flex-start; text-align:left; }
+  .card{ padding:2rem 1.6rem; }
+  .hero-content{ padding-top:110px; }
+  .hero-actions{ flex-direction:column; align-items:stretch; }
+  .hero-actions .btn{ justify-content:center; }
+  .btn{ padding:.9rem 1.6rem; }
 }
 /* ============================================================
    FORMS (contact page)
