@@ -109,7 +109,9 @@ p{ margin:0; }
 .media-row > .text-body{ grid-area:body; }
 .media-row > .tile{ grid-area:img; }
 @media(max-width:1000px){
-  .media-row{ grid-template-columns:1fr; grid-template-areas:"head" "img" "body"; gap:2.2rem; }
+  .media-row,
+  .media-row.media-right,
+  .media-row.media-left{ grid-template-columns:1fr; grid-template-areas:"head" "img" "body"; gap:2.2rem; }
 }
 .muted{ color:var(--ivory-dim); }
 .gold{ color:var(--gold-400); }
