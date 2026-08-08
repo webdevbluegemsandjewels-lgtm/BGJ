@@ -432,7 +432,8 @@ a.card:hover .card-arrow{ background:var(--gold-500); border-color:var(--gold-50
   .step{ grid-template-columns:48px 1fr; gap:1.5rem; }
   .step-dot{ width:48px; height:48px; font-size:.95rem; }
   .process-rail{ left:24px; }
-  .footer-grid{ grid-template-columns:1fr; gap:2.5rem; }
+  .footer-grid{ grid-template-columns:1fr 1fr; gap:2rem 1.5rem; }
+  .footer-grid > div:first-child{ grid-column:1 / -1; }
   .footer-bottom{ flex-direction:column; align-items:flex-start; text-align:left; }
   .card{ padding:2rem 1.5rem; }
   .hero-content{ padding-top:112px; }
