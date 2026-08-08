@@ -52,10 +52,32 @@ document.addEventListener('DOMContentLoaded', () => {
   if (footerEl) stackSections.push(footerEl);
   if (stackSections.length) {
     stackSections.forEach((sec, i) => { sec.style.zIndex = i + 1; });
+    /* pin-and-reveal: sections taller than the viewport get their inner
+       content nudged upward as the user scrolls through them, so the
+       full height is seen before the next card covers this one. */
+    const revealSections = document.querySelectorAll('.stack-section');
+    const measureReveal = () => {
+      revealSections.forEach(sec => {
+        const inner = sec.querySelector(':scope > .wrap');
+        if (!inner) return;
+        inner.style.transform = 'none';
+        const style = getComputedStyle(sec);
+        const padding = parseFloat(style.paddingTop) + parseFloat(style.paddingBottom);
+        const available = window.innerHeight - padding;
+        sec._revealTop = sec.offsetTop;
+        sec._revealExtra = Math.max(0, inner.offsetHeight - available);
+        sec._revealInner = inner;
+      });
+    };
     let stackTicking = false;
     const applyStack = () => {
       stackTicking = false;
       const vh = window.innerHeight;
+      revealSections.forEach(sec => {
+        if (!sec._revealInner || !sec._revealExtra) return;
+        const progress = Math.min(Math.max((window.scrollY - sec._revealTop) / sec._revealExtra, 0), 1);
+        sec._revealInner.style.transform = `translateY(${-progress * sec._revealExtra}px)`;
+      });
       for (let i = 0; i < stackSections.length - 1; i++) {
         const current = stackSections[i];
         const next = stackSections[i + 1];
@@ -72,9 +94,22 @@ document.addEventListener('DOMContentLoaded', () => {
       stackTicking = true;
       requestAnimationFrame(applyStack);
     };
+    const remeasure = () => { measureReveal(); updateStack(); };
     document.addEventListener('scroll', updateStack, { passive: true });
-    window.addEventListener('resize', updateStack);
-    updateStack();
+    window.addEventListener('resize', remeasure);
+    window.addEventListener('load', remeasure);
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(remeasure);
+    }
+    setTimeout(remeasure, 600);
+    if (window.ResizeObserver) {
+      const ro = new ResizeObserver(() => remeasure());
+      revealSections.forEach(sec => {
+        const inner = sec.querySelector(':scope > .wrap');
+        if (inner) ro.observe(inner);
+      });
+    }
+    remeasure();
   }
   /* ---- hero parallax ---- */
   document.querySelectorAll('.hero-bg').forEach(bg => {
