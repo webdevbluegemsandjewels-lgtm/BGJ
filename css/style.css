@@ -34,7 +34,7 @@
   --ease-soft: cubic-bezier(.16,.84,.44,1);
 }
 *,*::before,*::after{ box-sizing:border-box; }
-html{ scroll-behavior:smooth; }
+html{ scroll-behavior:smooth; scroll-snap-type:y mandatory; scroll-padding-top:var(--nav-h,100px); }
 body{
   margin:0;
   background:var(--navy-950);
@@ -74,8 +74,29 @@ p{ margin:0; }
   width:34px; height:1px;
   background:linear-gradient(90deg,transparent,var(--gold-500));
 }
-.section{ position:relative; padding:min(7vw,72px) 0; }
+.section{ position:relative; padding:4px 0; }
 .section-tight{ padding:min(5vw,48px) 0; }
+/* ---------- stacking-card scroll effect ---------- */
+.stack-section{
+  position:sticky;
+  top:0;
+  min-height:100vh;
+  min-height:100dvh;
+  padding-top:var(--nav-h,100px);
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  background:#fff;
+  border-radius:20px;
+  box-shadow:0 -30px 60px -30px rgba(20,26,36,.22);
+  transform-origin:center top;
+  will-change:transform, opacity;
+  scroll-snap-align:start;
+  scroll-snap-stop:always;
+  transition:transform .6s cubic-bezier(.22,.68,.2,1), opacity .6s cubic-bezier(.22,.68,.2,1);
+}
+.stack-section > .wrap{ width:100%; }
+.hero{ scroll-snap-align:start; scroll-snap-stop:always; }
 .center{ text-align:center; }
 .grid{ display:grid; gap:2.5rem; }
 .grid-2{ grid-template-columns:repeat(2,1fr); }
@@ -324,10 +345,9 @@ a.card:hover .card-arrow{ background:var(--gold-500); border-color:var(--gold-50
 /* ============================================================
    BAND / DARK ALT SECTIONS
    ============================================================ */
-.band{ background:var(--navy-900); border-top:1px solid var(--line-soft); border-bottom:1px solid var(--line-soft); }
+.band{ background:#fff; }
 .band-gold{
-  background:linear-gradient(120deg,var(--gold-100),var(--gold-300) 130%);
-  border-top:1px solid var(--line-soft); border-bottom:1px solid var(--line-soft);
+  background:#fff;
   position:relative;
 }
 /* ============================================================
@@ -370,7 +390,7 @@ a.card:hover .card-arrow{ background:var(--gold-500); border-color:var(--gold-50
 /* ============================================================
    FOOTER
    ============================================================ */
-.footer{ padding:5rem 0 2.5rem; background:var(--navy-900); border-top:1px solid var(--line-soft); }
+.footer{ padding:5rem 0 2.5rem; background:var(--navy-900); border-top:1px solid var(--line-soft); scroll-snap-align:start; position:sticky; top:0; }
 .footer-grid{ display:grid; grid-template-columns:1.4fr 1fr 1fr 1fr; gap:3rem; padding-bottom:3rem; }
 .footer h4{ font-size:.7rem; letter-spacing:.2em; text-transform:uppercase; color:var(--gold-400); margin-bottom:1.3rem; }
 .footer ul li{ margin-bottom:.7rem; }
@@ -419,6 +439,29 @@ a.card:hover .card-arrow{ background:var(--gold-500); border-color:var(--gold-50
   .hero-actions{ flex-direction:column; align-items:stretch; }
   .hero-actions .btn{ justify-content:center; }
   .btn{ padding:.9rem 1.6rem; }
+}
+/* ---------- stacking-card sections: mobile fit ---------- */
+@media(max-width:768px){
+  .stack-section{
+    padding-top:calc(var(--nav-h,90px) + 10px);
+    padding-bottom:10px;
+    justify-content:flex-start;
+    overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
+  }
+  .stack-section > .wrap{ margin:auto 0; }
+  .stack-section h2{ font-size:1.5rem !important; margin-top:.4rem !important; }
+  .stack-section p.lead,.stack-section .lead{ font-size:.95rem; }
+  .stack-section .muted{ font-size:.88rem; margin-top:.8rem !important; }
+  .stack-section .eyebrow{ font-size:.66rem; }
+  .stack-section .grid{ gap:1rem !important; }
+  .stack-section [style*="margin-top:3.6rem"]{ margin-top:1.2rem !important; }
+  .stack-section [style*="margin-top:3rem"]{ margin-top:1.2rem !important; }
+  .stack-section [style*="gap:5rem"]{ gap:1.6rem !important; }
+  .stack-section .tile.wide{ aspect-ratio:16/7; }
+  .stack-section .card{ padding:1.4rem 1.2rem; }
+  .stack-section .card p{ font-size:.86rem; }
+  .quote-block p{ font-size:1.05rem !important; }
 }
 /* ============================================================
    FORMS (contact page)

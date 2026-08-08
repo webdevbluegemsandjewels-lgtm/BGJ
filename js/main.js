@@ -14,12 +14,18 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   /* ---- nav scroll state ---- */
   const nav = document.querySelector('.nav');
+  const syncNavHeight = () => {
+    if (!nav) return;
+    document.documentElement.style.setProperty('--nav-h', `${nav.offsetHeight}px`);
+  };
   const onScroll = () => {
     if (!nav) return;
     if (window.scrollY > 40) nav.classList.add('scrolled');
     else nav.classList.remove('scrolled');
+    syncNavHeight();
   };
   document.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', syncNavHeight);
   onScroll();
   /* ---- mobile menu ---- */
   const toggle = document.querySelector('.nav-toggle');
@@ -42,6 +48,36 @@ document.addEventListener('DOMContentLoaded', () => {
     el.style.setProperty('--i', i % 6);
     io.observe(el);
   });
+  /* ---- stacking-card scroll effect ---- */
+  const stackSections = Array.from(document.querySelectorAll('.stack-section'));
+  const footerEl = document.querySelector('.footer');
+  if (footerEl) stackSections.push(footerEl);
+  if (stackSections.length) {
+    stackSections.forEach((sec, i) => { sec.style.zIndex = i + 1; });
+    let stackTicking = false;
+    const applyStack = () => {
+      stackTicking = false;
+      const vh = window.innerHeight;
+      for (let i = 0; i < stackSections.length - 1; i++) {
+        const current = stackSections[i];
+        const next = stackSections[i + 1];
+        const nextTop = next.getBoundingClientRect().top;
+        const progress = 1 - Math.min(Math.max(nextTop / vh, 0), 1);
+        const scale = 1 - progress * 0.06;
+        const opacity = 1 - progress * 0.35;
+        current.style.transform = `scale(${scale})`;
+        current.style.opacity = opacity;
+      }
+    };
+    const updateStack = () => {
+      if (stackTicking) return;
+      stackTicking = true;
+      requestAnimationFrame(applyStack);
+    };
+    document.addEventListener('scroll', updateStack, { passive: true });
+    window.addEventListener('resize', updateStack);
+    updateStack();
+  }
   /* ---- hero parallax ---- */
   document.querySelectorAll('.hero-bg').forEach(bg => {
     document.addEventListener('scroll', () => {
