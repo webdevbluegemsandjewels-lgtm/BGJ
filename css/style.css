@@ -74,7 +74,7 @@ p{ margin:0; }
   width:34px; height:1px;
   background:linear-gradient(90deg,transparent,var(--gold-500));
 }
-.section{ position:relative; padding:4px 0; }
+.section{ position:relative; padding:7.56px 0; }
 .section-tight{ padding:min(5vw,48px) 0; }
 /* ---------- stacking-card scroll effect ---------- */
 .stack-section{
@@ -101,6 +101,16 @@ p{ margin:0; }
 .grid-2{ grid-template-columns:repeat(2,1fr); }
 .grid-3{ grid-template-columns:repeat(3,1fr); }
 .grid-4{ grid-template-columns:repeat(4,1fr); }
+/* ---------- title/subtitle/image/text media row (standard mobile order) ---------- */
+.media-row{ display:grid; grid-template-columns:1fr 1fr; align-items:center; gap:5rem; }
+.media-row.media-right{ grid-template-areas:"head img" "body img"; }
+.media-row.media-left{ grid-template-areas:"img head" "img body"; }
+.media-row > .text-head{ grid-area:head; }
+.media-row > .text-body{ grid-area:body; }
+.media-row > .tile{ grid-area:img; }
+@media(max-width:1000px){
+  .media-row{ grid-template-columns:1fr; grid-template-areas:"head" "img" "body"; gap:2.2rem; }
+}
 .muted{ color:var(--ivory-dim); }
 .gold{ color:var(--gold-400); }
 .divider{
@@ -384,6 +394,7 @@ a.card:hover .card-arrow{ background:var(--gold-500); border-color:var(--gold-50
 .tile.photo .tile-label{ color:#fff; }
 .tile.photo .tile-label small{ color:var(--gold-300); }
 .tile.tall{ aspect-ratio:3/4.6; }
+.tile.square{ aspect-ratio:1/1; }
 /* facet svg overlay reused as gem motif */
 .gem-mark{ color:var(--gold-500); width:34px; height:34px; }
 /* ============================================================
