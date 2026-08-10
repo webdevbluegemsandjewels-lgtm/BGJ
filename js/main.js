@@ -118,6 +118,36 @@ document.addEventListener('DOMContentLoaded', () => {
       bg.style.transform = `translate3d(0, ${y * 0.15}px, 0)`;
     }, { passive: true });
   });
+  /* ---- founder profile popup ---- */
+  const founderModal = document.getElementById('founder-modal');
+  if (founderModal) {
+    const nameEl = document.getElementById('founder-modal-name');
+    const titleEl = document.getElementById('founder-modal-title');
+    const bioEl = document.getElementById('founder-modal-bio');
+    const avatarEl = document.getElementById('founder-modal-avatar');
+    const openModal = (card) => {
+      nameEl.textContent = card.dataset.name || '';
+      titleEl.textContent = card.dataset.title || '';
+      bioEl.textContent = card.dataset.bio || '';
+      const avatar = card.querySelector('.founder-avatar');
+      avatarEl.textContent = avatar ? avatar.textContent : '';
+      founderModal.classList.add('open');
+      founderModal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    };
+    const closeModal = () => {
+      founderModal.classList.remove('open');
+      founderModal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    };
+    document.querySelectorAll('.founder-card').forEach(card => {
+      card.addEventListener('click', () => openModal(card));
+    });
+    founderModal.querySelectorAll('[data-close]').forEach(el => el.addEventListener('click', closeModal));
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && founderModal.classList.contains('open')) closeModal();
+    });
+  }
   /* ---- counter animation ---- */
   document.querySelectorAll('[data-count]').forEach(el => {
     const target = parseInt(el.getAttribute('data-count'), 10);

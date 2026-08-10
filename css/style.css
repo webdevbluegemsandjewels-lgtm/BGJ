@@ -74,6 +74,8 @@ p{ margin:0; }
   width:34px; height:1px;
   background:linear-gradient(90deg,transparent,var(--gold-500));
 }
+.eyebrow-center{ display:flex; justify-content:center; width:100%; }
+.eyebrow-center::before{ display:none; }
 .section{ position:relative; padding:7.56px 0; }
 .section-tight{ padding:min(5vw,48px) 0; }
 /* ---------- stacking-card scroll effect ---------- */
@@ -112,6 +114,14 @@ p{ margin:0; }
   .media-row,
   .media-row.media-right,
   .media-row.media-left{ grid-template-columns:1fr; grid-template-areas:"head" "img" "body"; gap:2.2rem; }
+}
+/* laptop-only: trim the text column's vertical rhythm so it matches the image's height */
+@media(min-width:1001px) and (max-width:1440px){
+  .media-row--fit{ row-gap:1.4rem; }
+  .media-row--fit h2{ line-height:1.22; font-size:clamp(1.6rem,2.4vw,2.05rem); }
+  .media-row--fit .text-head{ margin-bottom:0; }
+  .media-row--fit ul{ gap:.5rem !important; }
+  .media-row--fit .btn{ margin-top:1rem !important; }
 }
 .muted{ color:var(--ivory-dim); }
 .gold{ color:var(--gold-400); }
@@ -305,6 +315,57 @@ p{ margin:0; }
   display:flex; align-items:center; justify-content:center; margin-bottom:1.5rem;
   color:var(--gold-400);
 }
+/* ---------- founder profile cards + popup ---------- */
+.founder-card{
+  all:unset; box-sizing:border-box; cursor:pointer;
+  display:flex; flex-direction:column; align-items:center; text-align:center;
+  padding:2.5rem 2rem; border:1px solid var(--line-soft); border-radius:4px;
+  background:linear-gradient(160deg,rgba(17,22,42,.025),rgba(17,22,42,0));
+  transition:border-color .4s,transform .4s var(--ease),background .4s,box-shadow .4s;
+}
+.founder-card:hover,.founder-card:focus-visible{
+  border-color:var(--line); transform:translateY(-6px);
+  background:linear-gradient(160deg,rgba(23,81,127,.07),rgba(17,22,42,0));
+  box-shadow:0 20px 40px -20px rgba(17,22,42,.18);
+}
+.founder-avatar{
+  width:88px; height:88px; border-radius:50%; margin-bottom:1.5rem;
+  background:linear-gradient(155deg,var(--navy-700),var(--navy-900));
+  border:1px solid var(--line);
+  display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  font-family:var(--serif); font-size:1.4rem; color:var(--gold-500);
+}
+.founder-card h3{ font-size:1.15rem; color:var(--ivory); }
+.founder-role{
+  display:block; margin-top:.35rem; font-size:.66rem; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--gold-400);
+}
+.founder-card p{ margin-top:1rem; color:var(--ivory-dim); font-size:.9rem; }
+.founder-more{ margin-top:1.3rem; font-size:.74rem; letter-spacing:.06em; color:var(--gold-500); }
+.founder-modal{
+  position:fixed; inset:0; z-index:2000; display:none; align-items:center; justify-content:center; padding:2rem;
+}
+.founder-modal.open{ display:flex; }
+.founder-modal-backdrop{ position:absolute; inset:0; background:rgba(10,14,26,.55); backdrop-filter:blur(4px); }
+.founder-modal-panel{
+  position:relative; max-width:480px; width:100%; background:#fff; border-radius:12px;
+  padding:3rem 2.5rem; text-align:center; box-shadow:0 30px 80px -20px rgba(17,22,42,.35);
+  opacity:0; transform:translateY(20px) scale(.97);
+  transition:opacity .35s var(--ease-soft), transform .35s var(--ease-soft);
+  display:flex; flex-direction:column; align-items:center;
+}
+.founder-modal.open .founder-modal-panel{ opacity:1; transform:translateY(0) scale(1); }
+.founder-modal-close{
+  position:absolute; top:1rem; right:1rem; width:36px; height:36px; border-radius:50%;
+  border:1px solid var(--line); background:none; cursor:pointer; font-size:1.2rem; line-height:1;
+  color:var(--ivory-dim); display:flex; align-items:center; justify-content:center;
+  transition:background .3s,color .3s;
+}
+.founder-modal-close:hover{ background:var(--gold-100); color:var(--gold-500); }
+.founder-avatar-lg{ width:110px; height:110px; font-size:1.8rem; margin-bottom:1.5rem; }
+.founder-modal-panel h3{ font-size:1.4rem; color:var(--ivory); }
+.founder-modal-panel .founder-role{ margin-top:.4rem; }
+.founder-modal-panel p{ margin-top:1.4rem; color:var(--ivory-dim); line-height:1.75; font-size:.94rem; }
 /* clickable service card — same visual as .card, plus an affordance arrow */
 a.card{ display:block; cursor:pointer; }
 a.card .card-arrow{
