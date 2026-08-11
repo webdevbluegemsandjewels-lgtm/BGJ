@@ -148,6 +148,132 @@ document.addEventListener('DOMContentLoaded', () => {
       if (e.key === 'Escape' && founderModal.classList.contains('open')) closeModal();
     });
   }
+  /* ---- certification stacked-card carousel ---- */
+  const certStack = document.getElementById('cert-stack');
+  if (certStack) {
+    const cards = Array.from(certStack.querySelectorAll('.cert-stack-card'));
+    const total = cards.length;
+    const dotsWrap = document.getElementById('cert-dots');
+    const textEl = document.getElementById('cert-text');
+    const indexEl = document.getElementById('cert-text-index');
+    const titleEl = document.getElementById('cert-text-title');
+    const descEl = document.getElementById('cert-text-desc');
+    const meta1LabelEl = document.getElementById('cert-meta1-label');
+    const meta1ValueEl = document.getElementById('cert-meta1-value');
+    const meta2LabelEl = document.getElementById('cert-meta2-label');
+    const meta2ValueEl = document.getElementById('cert-meta2-value');
+    let active = 0;
+    let switching = false;
+
+    cards.forEach(() => {
+      const dot = document.createElement('button');
+      dot.type = 'button';
+      dot.className = 'cert-dot';
+      dotsWrap.appendChild(dot);
+    });
+    const dots = Array.from(dotsWrap.children);
+
+    const layout = (offset) => {
+      if (offset >= 4) return { transform: 'translateY(60px) scale(.8)', opacity: 0, z: 0, pe: 'none' };
+      const translateY = offset * 14;
+      const scale = 1 - offset * 0.045;
+      const rotate = offset === 0 ? 0 : (offset % 2 === 0 ? -3 : 3);
+      const opacity = 1 - offset * 0.22;
+      return {
+        transform: `translateY(${translateY}px) scale(${scale}) rotate(${rotate}deg)`,
+        opacity, z: total - offset, pe: offset === 0 ? 'auto' : 'none'
+      };
+    };
+
+    const render = () => {
+      cards.forEach((card, i) => {
+        const offset = (i - active + total) % total;
+        const s = layout(offset);
+        card.style.transform = s.transform;
+        card.style.opacity = s.opacity;
+        card.style.zIndex = s.z;
+        card.style.pointerEvents = s.pe;
+      });
+      dots.forEach((d, i) => d.classList.toggle('active', i === active));
+    };
+
+    const applyText = () => {
+      const card = cards[active];
+      indexEl.textContent = `Certification ${String(active + 1).padStart(2, '0')}`;
+      titleEl.textContent = card.dataset.name || '';
+      descEl.textContent = card.dataset.desc || '';
+      meta1LabelEl.textContent = card.dataset.meta1Label || '';
+      meta1ValueEl.textContent = card.dataset.meta1Value || '';
+      meta2LabelEl.textContent = card.dataset.meta2Label || '';
+      meta2ValueEl.textContent = card.dataset.meta2Value || '';
+    };
+
+    const goTo = (index) => {
+      if (switching) return;
+      active = ((index % total) + total) % total;
+      switching = true;
+      textEl.classList.add('switching');
+      render();
+      setTimeout(() => {
+        applyText();
+        textEl.classList.remove('switching');
+        setTimeout(() => { switching = false; }, 350);
+      }, 200);
+    };
+    const next = () => goTo(active + 1);
+    const prev = () => goTo(active - 1);
+
+    applyText();
+    render();
+
+    document.getElementById('cert-next').addEventListener('click', () => { next(); resetAutoplay(); });
+    document.getElementById('cert-prev').addEventListener('click', () => { prev(); resetAutoplay(); });
+    dots.forEach((d, i) => d.addEventListener('click', () => { goTo(i); resetAutoplay(); }));
+    cards.forEach((card, i) => {
+      card.addEventListener('click', () => {
+        if (i === active) { next(); resetAutoplay(); }
+      });
+    });
+
+    /* autoplay, pauses on hover/focus/interaction */
+    let autoplayTimer = null;
+    const startAutoplay = () => { autoplayTimer = setInterval(next, 6500); };
+    const stopAutoplay = () => { if (autoplayTimer) clearInterval(autoplayTimer); };
+    const resetAutoplay = () => { stopAutoplay(); startAutoplay(); };
+    startAutoplay();
+    certStack.addEventListener('mouseenter', stopAutoplay);
+    certStack.addEventListener('mouseleave', startAutoplay);
+
+    /* contained wheel input on desktop — nudges the stack, then cools down
+       so normal page scrolling isn't trapped */
+    let wheelAccum = 0;
+    let wheelLocked = false;
+    certStack.addEventListener('wheel', (e) => {
+      if (wheelLocked) return;
+      wheelAccum += e.deltaY;
+      if (Math.abs(wheelAccum) > 60) {
+        e.preventDefault();
+        wheelAccum > 0 ? next() : prev();
+        resetAutoplay();
+        wheelAccum = 0;
+        wheelLocked = true;
+        setTimeout(() => { wheelLocked = false; }, 700);
+      }
+    }, { passive: false });
+
+    /* touch swipe on mobile */
+    let touchStartX = 0;
+    certStack.addEventListener('touchstart', (e) => {
+      touchStartX = e.touches[0].clientX;
+    }, { passive: true });
+    certStack.addEventListener('touchend', (e) => {
+      const dx = e.changedTouches[0].clientX - touchStartX;
+      if (Math.abs(dx) > 40) {
+        dx < 0 ? next() : prev();
+        resetAutoplay();
+      }
+    }, { passive: true });
+  }
   /* ---- counter animation ---- */
   document.querySelectorAll('[data-count]').forEach(el => {
     const target = parseInt(el.getAttribute('data-count'), 10);
