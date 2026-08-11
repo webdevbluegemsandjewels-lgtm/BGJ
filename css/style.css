@@ -120,6 +120,9 @@ p{ margin:0; }
   .media-row.media-top,
   .media-row.media-top.media-left{ grid-template-columns:1fr; grid-template-areas:"head" "img" "body"; gap:2.2rem; }
 }
+@media(min-width:1001px){
+  .retailers-cta{ margin-bottom:3.5rem; }
+}
 /* laptop-only: trim the text column's vertical rhythm so it matches the image's height */
 @media(min-width:1001px) and (max-width:1440px){
   .media-row--fit{ row-gap:1.4rem; }

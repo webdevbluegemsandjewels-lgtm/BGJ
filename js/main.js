@@ -64,8 +64,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const style = getComputedStyle(sec);
         const padding = parseFloat(style.paddingTop) + parseFloat(style.paddingBottom);
         const available = window.innerHeight - padding;
+        const extra = inner.offsetHeight - available;
         sec._revealTop = sec.offsetTop;
-        sec._revealExtra = Math.max(0, inner.offsetHeight - available);
+        sec._revealExtra = extra > 0 ? extra + 8 : 0;
         sec._revealInner = inner;
       });
     };
