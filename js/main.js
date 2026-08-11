@@ -274,6 +274,84 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }, { passive: true });
   }
+  /* ---- product constellation (circular auto-rotating showcase) ---- */
+  const orbitShowcase = document.getElementById('orbit-showcase');
+  if (orbitShowcase) {
+    const products = [
+      { name: 'Diamond Ring', img: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=500&q=70', desc: 'A refined diamond ring crafted with precision and timeless detailing.' },
+      { name: 'Diamond Earrings', img: 'https://images.unsplash.com/photo-1573408301185-9146fe634ad0?auto=format&fit=crop&w=500&q=70', desc: 'Elegant earrings balanced for comfort and finished neatly from every angle.' },
+      { name: 'Diamond Pendant', img: 'https://images.unsplash.com/photo-1611085583191-a3b181a88401?auto=format&fit=crop&w=500&q=70', desc: 'A sophisticated pendant defined by refined craftsmanship and exceptional finish.' },
+      { name: 'Diamond Necklace', img: 'https://images.unsplash.com/photo-1611955167811-4711904bb9f8?auto=format&fit=crop&w=500&q=70', desc: 'An elegant necklace designed with refined proportions and exceptional finishing.' },
+      { name: 'Gold Bracelet', img: 'https://images.unsplash.com/photo-1608042314453-ae338d80c427?auto=format&fit=crop&w=500&q=70', desc: 'A dependable bracelet built for daily movement without compromising refinement.' },
+      { name: 'Diamond Brooch', img: 'https://images.unsplash.com/photo-1611652022419-a9419f74343d?auto=format&fit=crop&w=500&q=70', desc: 'A statement brooch, precisely pinned and finished with quiet confidence.' },
+      { name: "Men's Jewellery", img: 'https://images.unsplash.com/photo-1506630448388-4e683c67ddb0?auto=format&fit=crop&w=500&q=70', desc: 'Strong, comfortable jewellery, refined for everyday confidence.' }
+    ];
+    const total = products.length;
+    const centerImg = document.getElementById('orbit-center-img');
+    const nameEl = document.getElementById('orbit-name');
+    const descEl = document.getElementById('orbit-desc');
+    const textEl = document.getElementById('orbit-text');
+    const orbitItems = Array.from(orbitShowcase.querySelectorAll('.orbit-item'));
+    const faceImgs = orbitItems.map(item => item.querySelector('.orbit-item-face img'));
+    faceImgs.forEach(img => { img.onerror = () => { img.style.opacity = '0'; }; });
+    centerImg.onerror = () => { centerImg.style.opacity = '0'; };
+    let active = 0;
+
+    const applyContent = () => {
+      const p = products[active];
+      centerImg.style.opacity = '';
+      centerImg.src = p.img;
+      centerImg.alt = p.name;
+      nameEl.textContent = p.name;
+      descEl.textContent = p.desc;
+      for (let i = 1; i < total; i++) {
+        const outerIndex = (active + i) % total;
+        const outer = products[outerIndex];
+        const img = faceImgs[i - 1];
+        img.style.opacity = '';
+        img.src = outer.img;
+        img.alt = outer.name;
+        orbitItems[i - 1].dataset.productIndex = outerIndex;
+      }
+      requestAnimationFrame(() => {
+        centerImg.classList.add('in');
+        textEl.classList.add('in');
+      });
+    };
+
+    const render = (animate) => {
+      if (!animate) { applyContent(); return; }
+      centerImg.classList.remove('in');
+      textEl.classList.remove('in');
+      setTimeout(applyContent, 620);
+    };
+
+    const goTo = (index) => {
+      if (index === active) return;
+      active = ((index % total) + total) % total;
+      render(true);
+    };
+
+    let autoplayTimer = null;
+    const startAutoplay = () => {
+      autoplayTimer = setInterval(() => goTo(active + 1), 4500);
+    };
+    const resetAutoplay = () => { clearInterval(autoplayTimer); startAutoplay(); };
+
+    orbitItems.forEach(item => {
+      item.style.cursor = 'pointer';
+      item.addEventListener('click', () => {
+        const idx = parseInt(item.dataset.productIndex, 10);
+        if (!isNaN(idx)) {
+          goTo(idx);
+          resetAutoplay();
+        }
+      });
+    });
+
+    render(false);
+    startAutoplay();
+  }
   /* ---- counter animation ---- */
   document.querySelectorAll('[data-count]').forEach(el => {
     const target = parseInt(el.getAttribute('data-count'), 10);

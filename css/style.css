@@ -107,13 +107,18 @@ p{ margin:0; }
 .media-row{ display:grid; grid-template-columns:1fr 1fr; align-items:center; gap:5rem; }
 .media-row.media-right{ grid-template-areas:"head img" "body img"; }
 .media-row.media-left{ grid-template-areas:"img head" "img body"; }
+.media-row.media-top{ grid-template-areas:"head head" "body img"; row-gap:3rem; }
+.media-row.media-top.media-left{ grid-template-areas:"head head" "img body"; }
+.media-row.media-top > .text-head{ text-align:center; }
 .media-row > .text-head{ grid-area:head; }
 .media-row > .text-body{ grid-area:body; }
 .media-row > .tile{ grid-area:img; }
 @media(max-width:1000px){
   .media-row,
   .media-row.media-right,
-  .media-row.media-left{ grid-template-columns:1fr; grid-template-areas:"head" "img" "body"; gap:2.2rem; }
+  .media-row.media-left,
+  .media-row.media-top,
+  .media-row.media-top.media-left{ grid-template-columns:1fr; grid-template-areas:"head" "img" "body"; gap:2.2rem; }
 }
 /* laptop-only: trim the text column's vertical rhythm so it matches the image's height */
 @media(min-width:1001px) and (max-width:1440px){
@@ -315,6 +320,58 @@ p{ margin:0; }
   width:48px; height:48px; border:1px solid var(--line); border-radius:50%;
   display:flex; align-items:center; justify-content:center; margin-bottom:1.5rem;
   color:var(--gold-400);
+}
+/* ---------- product constellation (circular auto-rotating showcase) ---------- */
+.orbit-showcase{ display:flex; align-items:center; justify-content:center; gap:4rem; flex-wrap:wrap; }
+.orbit-stage{
+  position:relative; width:440px; height:440px; max-width:100%;
+  --orbit-r:160px; --center-d:190px; --item-d:82px;
+}
+.orbit-ring{ position:absolute; inset:0; animation:orbit-spin 90s linear infinite; }
+.orbit-item{
+  position:absolute; top:50%; left:50%; width:var(--item-d); height:var(--item-d);
+  margin:calc(var(--item-d) / -2) 0 0 calc(var(--item-d) / -2);
+}
+.orbit-item-face{
+  width:100%; height:100%; border-radius:50%; overflow:hidden;
+  border:1px solid var(--line); box-shadow:0 10px 26px -14px rgba(17,22,42,.25);
+  background:linear-gradient(155deg,var(--navy-700),var(--navy-900));
+  animation:orbit-counter-spin 90s linear infinite;
+  transition:border-color .3s var(--ease), box-shadow .3s var(--ease);
+}
+.orbit-item:hover .orbit-item-face{ border-color:var(--gold-500); box-shadow:0 14px 32px -12px rgba(13,57,88,.4); }
+.orbit-item-face img{ width:100%; height:100%; object-fit:cover; transition:transform .3s var(--ease); }
+.orbit-item:hover .orbit-item-face img{ transform:scale(1.15); }
+.orbit-center{
+  position:absolute; top:50%; left:50%; width:var(--center-d); height:var(--center-d);
+  margin:calc(var(--center-d) / -2) 0 0 calc(var(--center-d) / -2);
+  border-radius:50%; overflow:hidden; z-index:5;
+  border:1px solid var(--gold-500); box-shadow:0 24px 55px -20px rgba(13,57,88,.35);
+  background:linear-gradient(155deg,var(--navy-700),var(--navy-900));
+}
+.orbit-center img{
+  width:100%; height:100%; object-fit:cover;
+  opacity:0; transform:scale(.9);
+  transition:opacity .6s var(--ease-soft), transform .6s var(--ease-soft);
+}
+.orbit-center img.in{ opacity:1; transform:scale(1); }
+@keyframes orbit-spin{ to{ transform:rotate(360deg); } }
+@keyframes orbit-counter-spin{ to{ transform:rotate(-360deg); } }
+.orbit-text{ text-align:left; max-width:380px; flex:1 1 300px; }
+.orbit-text h3{
+  font-size:1.4rem; color:var(--ivory);
+  opacity:0; transform:translateY(10px); transition:opacity .5s var(--ease-soft), transform .5s var(--ease-soft);
+}
+.orbit-text p{
+  margin-top:.7rem; color:var(--ivory-dim); font-size:.94rem; line-height:1.7;
+  opacity:0; transform:translateY(10px); transition:opacity .5s var(--ease-soft) .08s, transform .5s var(--ease-soft) .08s;
+}
+.orbit-text.in h3, .orbit-text.in p{ opacity:1; transform:translateY(0); }
+@media(max-width:900px){
+  .orbit-text{ text-align:center; }
+}
+@media(max-width:640px){
+  .orbit-stage{ width:320px; height:320px; --orbit-r:112px; --center-d:150px; --item-d:60px; }
 }
 .card-logo{
   width:100%; height:120px; border:1px solid var(--line); border-radius:6px;
@@ -555,10 +612,12 @@ a.card:hover .card-arrow{ background:var(--gold-500); border-color:var(--gold-50
 /* ============================================================
    RESPONSIVE GRID FALLBACKS
    ============================================================ */
+.puzzle{ grid-template-columns:repeat(5,1fr); }
 @media(max-width:1000px){
   .grid-4{ grid-template-columns:repeat(2,1fr); }
   .grid-3{ grid-template-columns:repeat(2,1fr); }
   .grid-2{ grid-template-columns:1fr; }
+  .puzzle{ grid-template-columns:repeat(3,1fr); }
 }
 @media(max-width:640px){
   .wrap{ padding:0 5.5vw; }
