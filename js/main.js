@@ -357,6 +357,83 @@ document.addEventListener('DOMContentLoaded', () => {
     render(false);
     startAutoplay();
   }
+  /* ---- testimonial carousel (one centered, slides left/in from right, autoplays) ---- */
+  const testimonialCarousel = document.getElementById('testimonial-carousel');
+  if (testimonialCarousel) {
+    const testimonials = [
+      { quote: "We've worked with several manufacturing partners over the years, but Blue Gems and Jewels stands out for its consistency, craftsmanship, and attention to detail. Every piece reflects the standards our clientele expects.", attrib: 'Third-Generation Jeweller' },
+      { quote: "Their team understands the expectations of premium jewellery retail. From design execution to final finishing, the quality has always been exceptional.", attrib: 'Owner of a Luxury Jewellery Boutique' },
+      { quote: "Reliability is rare in this industry, and Blue Gems and Jewels has earned our complete trust. They consistently deliver products that exceed expectations.", attrib: 'Leading Jewellery Retailer' },
+      { quote: "Our relationship with Blue Gems and Jewels has been built on years of trust, transparency, and outstanding craftsmanship. They have become an integral part of our business.", attrib: 'Established Jewellery Entrepreneur' },
+      { quote: "When serving discerning customers, quality cannot be compromised. Blue Gems and Jewels has consistently helped us maintain the highest standards.", attrib: 'Premium Jewellery Business Owner' }
+    ];
+    const total = testimonials.length;
+    const slide = document.getElementById('testimonial-slide');
+    const textEl = document.getElementById('testimonial-text');
+    const attribEl = document.getElementById('testimonial-attrib');
+    const dotsWrap = document.getElementById('testimonial-dots');
+    testimonials.forEach(() => {
+      const dot = document.createElement('button');
+      dot.type = 'button';
+      dot.className = 'testimonial-dot';
+      dotsWrap.appendChild(dot);
+    });
+    const dots = Array.from(dotsWrap.children);
+    let active = 0;
+    let switching = false;
+
+    const applyContent = () => {
+      const t = testimonials[active];
+      textEl.textContent = t.quote;
+      attribEl.textContent = t.attrib;
+      dots.forEach((d, i) => d.classList.toggle('active', i === active));
+      slide.classList.remove('out');
+      slide.classList.add('in');
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        slide.classList.remove('in');
+        setTimeout(() => { switching = false; }, 600);
+      }));
+    };
+
+    const goTo = (index) => {
+      if (switching) return;
+      switching = true;
+      active = ((index % total) + total) % total;
+      slide.classList.add('out');
+      setTimeout(applyContent, 600);
+    };
+    const next = () => goTo(active + 1);
+    const prev = () => goTo(active - 1);
+
+    applyContent();
+    dots.forEach((d, i) => d.addEventListener('click', () => { goTo(i); resetAutoplay(); }));
+
+    const AUTOPLAY_MS = 2500;
+    let autoplayTimer = setInterval(next, AUTOPLAY_MS);
+    const resetAutoplay = () => { clearInterval(autoplayTimer); autoplayTimer = setInterval(next, AUTOPLAY_MS); };
+    testimonialCarousel.addEventListener('mouseenter', () => clearInterval(autoplayTimer));
+    testimonialCarousel.addEventListener('mouseleave', resetAutoplay);
+
+    /* swipe/drag left or right to change testimonial */
+    let dragStartX = 0;
+    let dragging = false;
+    const dragThreshold = 40;
+    const onDragStart = (x) => { dragStartX = x; dragging = true; };
+    const onDragEnd = (x) => {
+      if (!dragging) return;
+      dragging = false;
+      const dx = x - dragStartX;
+      if (Math.abs(dx) > dragThreshold) {
+        dx < 0 ? next() : prev();
+        resetAutoplay();
+      }
+    };
+    testimonialCarousel.addEventListener('touchstart', (e) => onDragStart(e.touches[0].clientX), { passive: true });
+    testimonialCarousel.addEventListener('touchend', (e) => onDragEnd(e.changedTouches[0].clientX), { passive: true });
+    testimonialCarousel.addEventListener('mousedown', (e) => onDragStart(e.clientX));
+    testimonialCarousel.addEventListener('mouseup', (e) => onDragEnd(e.clientX));
+    testimonialCarousel.addEventListener('mouseleave', () => { dragging = false; });
+  }
   /* ---- counter animation ---- */
   document.querySelectorAll('[data-count]').forEach(el => {
     const target = parseInt(el.getAttribute('data-count'), 10);
