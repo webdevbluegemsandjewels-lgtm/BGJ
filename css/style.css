@@ -267,12 +267,13 @@ p{ margin:0; }
   animation:driftBg 22s ease-in-out infinite alternate;
 }
 @keyframes driftBg{ from{ transform:translate3d(0,0,0) scale(1);} to{ transform:translate3d(-2%,2%,0) scale(1.06);} }
-.hero-photo{ position:absolute; inset:0; z-index:-3; overflow:hidden; }
+.hero-photo{ position:absolute; inset:0; z-index:-3; overflow:hidden; background:var(--navy-950); }
 .hero-photo img{
   width:100%; height:100%; object-fit:cover;
   transform:scale(1.08); animation:kenBurns 28s ease-in-out infinite alternate;
 }
 @keyframes kenBurns{ from{ transform:scale(1.08) translate(0,0); } to{ transform:scale(1.18) translate(-1.5%,-1.5%); } }
+.hero-photo video{ width:100%; height:100%; object-fit:cover; }
 .hero-scrim{
   position:absolute; inset:0; z-index:-2;
   background:linear-gradient(180deg, rgba(10,14,26,.55) 0%, rgba(10,14,26,.3) 40%, rgba(10,14,26,.5) 75%, rgba(10,14,26,.72) 100%);

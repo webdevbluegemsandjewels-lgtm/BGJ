@@ -5,6 +5,10 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ---- inject shared nav ---- */
   const navMount = document.getElementById('site-nav');
   if (navMount) navMount.innerHTML = NAV_HTML;
+  /* ---- load images/videos from Supabase Storage ---- */
+  document.querySelectorAll('[data-img]').forEach(el => {
+    el.src = supabaseImage(el.getAttribute('data-img'));
+  });
   /* ---- active nav link (data-key may hold several page names, space-separated) ---- */
   const page = document.body.getAttribute('data-page');
   document.querySelectorAll('.nav-links a[data-key], .mobile-panel a[data-key]').forEach(a => {

@@ -11,7 +11,7 @@
 <div id="site-nav"></div>
 <section class="hero page-hero">
   <div class="hero-bg"></div>
-  <div class="hero-photo"><img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=1920&q=70" alt="Jewellery trade exhibition floor" loading="eager" onerror="this.parentElement.style.display='none'"></div>
+  <div class="hero-photo"><video data-img="hero/events.mp4" autoplay muted loop playsinline onerror="this.parentElement.style.display='none'"></video></div>
   <div class="hero-scrim"></div>
   <div class="hero-facets"></div>
   <div class="hero-content">
@@ -24,10 +24,14 @@
 <section class="section stack-section">
   <div class="wrap">
     <div class="center reveal"><span class="eyebrow">Trade Platforms</span>
-      <h2 style="font-size:clamp(1.8rem,3.4vw,2.6rem); margin-top:.5rem;">Eight platforms. One consistent promise.</h2>
+      <h2 style="font-size:clamp(1.8rem,3.4vw,2.6rem); margin-top:.5rem;">Nine platforms. One consistent promise.</h2>
     </div>
     <div class="grid" style="margin-top:3.6rem; gap:1.4rem;">
       <div class="card reveal grid grid-2" style="align-items:center; gap:2rem;">
+        <div><span class="year-badge">IIJS</span><h3 style="margin-top:1rem;">IIJS — India International Jewellery Show</h3><p>One of India's largest and most prestigious B2B jewellery exhibitions, bringing together manufacturers, wholesalers, retailers, exporters, and international buyers to showcase the latest jewellery collections, technology, and industry innovations.</p></div>
+        <div class="tile wide photo"><img src="https://images.unsplash.com/photo-1611085583191-a3b181a88401?auto=format&fit=crop&w=900&q=70" alt="IIJS India International Jewellery Show" loading="lazy" onerror="this.remove()"><div class="tile-label"><small>India's Largest B2B Platform</small>Manufacturers, Retailers &amp; Exporters</div></div>
+      </div>
+      <div class="card reveal grid grid-2" style="align-items:center; gap:2rem; transition-delay:.02s;">
         <div><span class="year-badge">Signature</span><h3 style="margin-top:1rem;">IIJS Bharat — Signature</h3><p>A design-led B2B jewellery exhibition where refined collections and focused trade conversations begin the year.</p></div>
         <div class="tile wide photo"><img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=900&q=70" alt="IIJS Signature exhibition" loading="lazy" onerror="this.remove()"><div class="tile-label"><small>Beginning of the Calendar</small>Design &amp; Commercial Understanding</div></div>
       </div>
@@ -88,6 +92,7 @@
 </section>
 <div id="site-footer"></div>
 <script src="js/footer.js"></script>
+<script src="js/supabase-config.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>
