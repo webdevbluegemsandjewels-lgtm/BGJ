@@ -122,6 +122,7 @@ p{ margin:0; }
 }
 @media(min-width:1001px){
   .retailers-cta{ margin-bottom:3.5rem; }
+  .tech-precision-section{ margin-bottom:5rem; }
 }
 /* laptop-only: trim the text column's vertical rhythm so it matches the image's height */
 @media(min-width:1001px) and (max-width:1440px){
