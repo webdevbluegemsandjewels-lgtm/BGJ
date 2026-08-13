@@ -287,10 +287,21 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }, { passive: true });
   }
-  /* ---- past events (liquid-glass morphing blob showcase) ---- */
-  const peShowcase = document.getElementById('pe-showcase');
-  if (peShowcase) {
+  /* ---- past events (vertical poster-stack showcase) ---- */
+  const peStack = document.getElementById('pe-stack');
+  if (peStack) {
     const peEvents = [
+      {
+        title: 'IIJS 2026',
+        exhibition: 'IIJS — India International Jewellery Show',
+        location: 'India',
+        year: '2026',
+        desc: "Blue Gems and Jewels took part in IIJS 2026, one of India's largest B2B jewellery exhibitions, presenting its collections to manufacturers, retailers, and exporters nationwide. The exhibition marked an important platform for showcasing our manufacturing capability.",
+        images: [
+          { src: 'Past Events/IIJS_Aug_2026 image 1.jpeg', position: 'top' },
+          { src: 'Past Events/IIJS_Aug_2026 image 2 .jpeg' }
+        ]
+      },
       {
         title: 'The BOJ Show 2026',
         exhibition: 'The BOJ Show — Business of Jewellery',
@@ -364,130 +375,108 @@ document.addEventListener('DOMContentLoaded', () => {
         images: ['Past Events/Iijs 2022 IMAGE 1.jpg', 'Past Events/Iijs 2022 IMAGE 2.jpg']
       }
     ];
-    const peTotal = peEvents.length;
-    const peTextEl = document.getElementById('pe-text');
-    const peTitleEl = document.getElementById('pe-title');
-    const peExhibitionEl = document.getElementById('pe-exhibition');
-    const peLocationEl = document.getElementById('pe-location');
-    const peYearEl = document.getElementById('pe-year');
-    const peDescEl = document.getElementById('pe-desc');
-    const peCurrentEl = document.getElementById('pe-current');
-    const peImgA = document.getElementById('pe-image-a');
-    const peImgB = document.getElementById('pe-image-b');
-    const peDotsWrap = document.getElementById('pe-dots');
-    const peImgDotsWrap = document.getElementById('pe-img-dots');
-    document.getElementById('pe-total').textContent = String(peTotal).padStart(2, '0');
+    const peImgSrc = (img) => typeof img === 'string' ? img : img.src;
+    const peImgPosition = (img) => (typeof img === 'object' && img.position) ? `center ${img.position}` : 'center';
 
-    let peActive = 0;
-    let peImgActive = 0;
-    let peSwitching = false;
-    let peShowingA = true;
+    const pillars = peEvents.map((ev, i) => {
+      const el = document.createElement('div');
+      el.className = 'pe-pillar' + (i === 0 ? ' pe-active' : ' pe-inactive');
+      el.tabIndex = 0;
+      el.setAttribute('role', 'button');
+      el.setAttribute('aria-label', ev.title);
 
-    peEvents.forEach(() => {
-      const dot = document.createElement('button');
-      dot.type = 'button';
-      dot.className = 'pe-dot-btn';
-      peDotsWrap.appendChild(dot);
+      const imgA = document.createElement('img');
+      imgA.className = 'pe-pillar-img';
+      imgA.alt = ev.title;
+      const imgB = document.createElement('img');
+      imgB.className = 'pe-pillar-img';
+      imgB.alt = ev.title;
+
+      const scrim = document.createElement('div');
+      scrim.className = 'pe-pillar-scrim';
+
+      const tag = document.createElement('div');
+      tag.className = 'pe-pillar-tag';
+      tag.innerHTML = `<span><small>${ev.year}</small>${ev.title}</span>`;
+
+      const detail = document.createElement('div');
+      detail.className = 'pe-pillar-detail';
+      detail.innerHTML = `
+        <span class="pe-pillar-num">${String(i + 1).padStart(2, '0')} / ${String(peEvents.length).padStart(2, '0')}</span>
+        <h3 class="pe-pillar-title">${ev.title}</h3>
+        <span class="pe-pillar-exhibition">${ev.exhibition}</span>
+        <div class="pe-pillar-meta"><span>${ev.location}</span><span class="pe-meta-dot">&middot;</span><span>${ev.year}</span></div>
+        <p class="pe-pillar-desc">${ev.desc}</p>
+        <div class="pe-pillar-imgdots"></div>
+      `;
+
+      el.append(imgA, imgB, scrim, tag, detail);
+      peStack.appendChild(el);
+
+      return { el, ev, imgA, imgB, showingA: true, imgIndex: 0, dotsWrap: detail.querySelector('.pe-pillar-imgdots') };
     });
-    const peDots = Array.from(peDotsWrap.children);
 
-    const peSetImage = (path) => {
-      const showEl = peShowingA ? peImgB : peImgA;
-      const hideEl = peShowingA ? peImgA : peImgB;
-      showEl.src = supabaseImage(path);
-      showEl.classList.add('active');
-      hideEl.classList.remove('active');
-      peShowingA = !peShowingA;
-    };
-
-    const peRenderImgDots = () => {
-      peImgDotsWrap.innerHTML = '';
-      const images = peEvents[peActive].images;
-      if (images.length < 2) return;
-      images.forEach((_, i) => {
-        const dot = document.createElement('button');
-        dot.type = 'button';
-        dot.className = 'pe-img-dot' + (i === peImgActive ? ' active' : '');
-        dot.addEventListener('click', () => { peGoToImage(i); peResetAutoplay(); });
-        peImgDotsWrap.appendChild(dot);
+    const renderPillarDots = (p) => {
+      p.dotsWrap.innerHTML = '';
+      if (p.ev.images.length < 2) return;
+      p.ev.images.forEach((_, i) => {
+        const dot = document.createElement('span');
+        if (i === p.imgIndex) dot.classList.add('active');
+        p.dotsWrap.appendChild(dot);
       });
     };
 
-    const peGoToImage = (i) => {
-      const images = peEvents[peActive].images;
-      peImgActive = ((i % images.length) + images.length) % images.length;
-      peSetImage(images[peImgActive]);
-      Array.from(peImgDotsWrap.children).forEach((d, idx) => d.classList.toggle('active', idx === peImgActive));
+    const setPillarImage = (p, index) => {
+      const images = p.ev.images;
+      p.imgIndex = ((index % images.length) + images.length) % images.length;
+      const img = images[p.imgIndex];
+      const showEl = p.showingA ? p.imgB : p.imgA;
+      const hideEl = p.showingA ? p.imgA : p.imgB;
+      showEl.src = supabaseImage(peImgSrc(img));
+      showEl.style.objectPosition = peImgPosition(img);
+      showEl.classList.add('active');
+      hideEl.classList.remove('active');
+      p.showingA = !p.showingA;
+      Array.from(p.dotsWrap.children).forEach((d, i) => d.classList.toggle('active', i === p.imgIndex));
     };
 
-    const peApplyText = () => {
-      const ev = peEvents[peActive];
-      peTitleEl.textContent = ev.title;
-      peExhibitionEl.textContent = ev.exhibition;
-      peLocationEl.textContent = ev.location;
-      peYearEl.textContent = ev.year;
-      peDescEl.textContent = ev.desc;
-      peCurrentEl.textContent = String(peActive + 1).padStart(2, '0');
-      peDots.forEach((d, i) => d.classList.toggle('active', i === peActive));
+    pillars.forEach((p) => {
+      p.imgA.src = supabaseImage(peImgSrc(p.ev.images[0]));
+      p.imgA.style.objectPosition = peImgPosition(p.ev.images[0]);
+      p.imgA.classList.add('active');
+      renderPillarDots(p);
+    });
+
+    let activeIndex = 0;
+    let hoverIndex = null;
+
+    const render = () => {
+      const displayIndex = hoverIndex !== null ? hoverIndex : activeIndex;
+      pillars.forEach((p, i) => {
+        p.el.classList.toggle('pe-active', i === displayIndex);
+        p.el.classList.toggle('pe-inactive', i !== displayIndex);
+      });
     };
 
-    const peGoTo = (index) => {
-      if (peSwitching) return;
-      peActive = ((index % peTotal) + peTotal) % peTotal;
-      peImgActive = 0;
-      peSwitching = true;
-      peTextEl.classList.add('switching');
-      setTimeout(() => {
-        peApplyText();
-        peSetImage(peEvents[peActive].images[0]);
-        peRenderImgDots();
-        peTextEl.classList.remove('switching');
-        setTimeout(() => { peSwitching = false; }, 350);
-      }, 250);
-    };
-    const peNext = () => peGoTo(peActive + 1);
-    const pePrev = () => peGoTo(peActive - 1);
+    pillars.forEach((p, i) => {
+      p.el.addEventListener('mouseenter', () => { hoverIndex = i; render(); });
+      p.el.addEventListener('mouseleave', () => { hoverIndex = null; render(); });
+      p.el.addEventListener('mousemove', (e) => {
+        if (p.ev.images.length < 2) return;
+        const rect = p.el.getBoundingClientRect();
+        const relX = (e.clientX - rect.left) / rect.width;
+        const idx = Math.min(p.ev.images.length - 1, Math.max(0, Math.floor(relX * p.ev.images.length)));
+        if (idx !== p.imgIndex) setPillarImage(p, idx);
+      });
+      p.el.addEventListener('focus', () => { hoverIndex = i; render(); });
+      p.el.addEventListener('blur', () => { hoverIndex = null; render(); });
+      p.el.addEventListener('click', () => { activeIndex = i; hoverIndex = null; render(); });
+      p.el.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activeIndex = i; hoverIndex = null; render(); }
+      });
+    });
 
-    peApplyText();
-    peImgA.src = supabaseImage(peEvents[0].images[0]);
-    peImgA.classList.add('active');
-    peRenderImgDots();
-
-    document.getElementById('pe-next').addEventListener('click', () => { peNext(); peResetAutoplay(); });
-    document.getElementById('pe-prev').addEventListener('click', () => { pePrev(); peResetAutoplay(); });
-    peDots.forEach((d, i) => d.addEventListener('click', () => { peGoTo(i); peResetAutoplay(); }));
-
-    /* autoplay: steps through every image of the current event before
-       moving on to the next event, so text only changes once all
-       images for that event have been shown */
-    let peAutoplayTimer = null;
-    const peTick = () => {
-      const images = peEvents[peActive].images;
-      if (peImgActive < images.length - 1) {
-        peGoToImage(peImgActive + 1);
-      } else {
-        peNext();
-      }
-    };
-    const peStartAutoplay = () => { peAutoplayTimer = setInterval(peTick, 4200); };
-    const peStopAutoplay = () => { if (peAutoplayTimer) clearInterval(peAutoplayTimer); };
-    const peResetAutoplay = () => { peStopAutoplay(); peStartAutoplay(); };
-    peStartAutoplay();
-    peShowcase.addEventListener('mouseenter', peStopAutoplay);
-    peShowcase.addEventListener('mouseleave', peStartAutoplay);
-
-    /* touch swipe on mobile */
-    let peTouchStartX = 0;
-    peShowcase.addEventListener('touchstart', (e) => {
-      peTouchStartX = e.touches[0].clientX;
-    }, { passive: true });
-    peShowcase.addEventListener('touchend', (e) => {
-      const dx = e.changedTouches[0].clientX - peTouchStartX;
-      if (Math.abs(dx) > 40) {
-        dx < 0 ? peNext() : pePrev();
-        peResetAutoplay();
-      }
-    }, { passive: true });
+    render();
   }
   /* ---- product constellation (circular auto-rotating showcase) ---- */
   const orbitShowcase = document.getElementById('orbit-showcase');
