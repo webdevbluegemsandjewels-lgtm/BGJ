@@ -13,3 +13,12 @@ const SUPABASE_IMAGES_BUCKET = 'Images';
 function supabaseImage(path) {
   return `${SUPABASE_URL}/storage/v1/object/public/${SUPABASE_IMAGES_BUCKET}/${path}`;
 }
+
+// Bucket "documents" for downloadable PDFs (financial statements, reports, etc).
+// Give a download link `data-file="financial-statements/2022-2023.pdf"` and
+// main.js fills in the real href on page load.
+const SUPABASE_DOCS_BUCKET = 'documents';
+
+function supabaseFile(path) {
+  return `${SUPABASE_URL}/storage/v1/object/public/${SUPABASE_DOCS_BUCKET}/${path}`;
+}

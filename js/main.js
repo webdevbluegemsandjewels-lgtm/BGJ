@@ -8,6 +8,14 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ---- load images/videos from Supabase Storage ---- */
   document.querySelectorAll('[data-img]').forEach(el => {
     el.src = supabaseImage(el.getAttribute('data-img'));
+    /* hero videos: keep the local fallback image visible until the video is actually playing */
+    if (el.tagName === 'VIDEO' && el.closest('.hero-photo, .ir-hero-bg')) {
+      el.addEventListener('playing', () => el.classList.add('is-ready'));
+    }
+  });
+  /* ---- load document links from Supabase Storage ---- */
+  document.querySelectorAll('[data-file]').forEach(el => {
+    el.href = supabaseFile(el.getAttribute('data-file'));
   });
   /* ---- active nav link (data-key may hold several page names, space-separated) ---- */
   const page = document.body.getAttribute('data-page');
@@ -434,6 +442,25 @@ document.addEventListener('DOMContentLoaded', () => {
     testimonialCarousel.addEventListener('mouseup', (e) => onDragEnd(e.clientX));
     testimonialCarousel.addEventListener('mouseleave', () => { dragging = false; });
   }
+  /* ---- investor relations: tabs + accordion ---- */
+  const irPanel = document.getElementById('ir-panel');
+  const irTabsFloat = document.getElementById('ir-tabs');
+  if (irPanel && irTabsFloat) {
+    const tabs = Array.from(irTabsFloat.querySelectorAll('.ir-tab'));
+    const panels = Array.from(irPanel.querySelectorAll('.ir-tab-panel'));
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        const key = tab.getAttribute('data-tab');
+        tabs.forEach(t => t.classList.toggle('active', t === tab));
+        panels.forEach(p => p.classList.toggle('active', p.getAttribute('data-panel') === key));
+      });
+    });
+    irPanel.querySelectorAll('.ir-item-head').forEach(head => {
+      head.addEventListener('click', () => {
+        head.closest('.ir-item').classList.toggle('open');
+      });
+    });
+  }
   /* ---- counter animation ---- */
   document.querySelectorAll('[data-count]').forEach(el => {
     const target = parseInt(el.getAttribute('data-count'), 10);
@@ -490,10 +517,11 @@ const NAV_HTML = `
     </div>
     <a href="products.html" data-key="products">Products</a>
     <div class="nav-drop">
-      <a href="certifications.html" data-key="certifications events">Company<span class="caret">&#9662;</span></a>
+      <a href="certifications.html" data-key="certifications events investor-relations">Company<span class="caret">&#9662;</span></a>
       <div class="nav-drop-menu">
         <a href="certifications.html">Certifications</a>
         <a href="events.html">Events &amp; Exhibitions</a>
+        <a href="investor-relations.html">Investor Relations</a>
       </div>
     </div>
     <a href="contact.html" class="nav-cta" data-key="contact">Visit Factory</a>
@@ -514,6 +542,7 @@ const NAV_HTML = `
     <span class="mp-heading">Company</span>
     <a href="certifications.html">Certifications</a>
     <a href="events.html">Events &amp; Exhibitions</a>
+    <a href="investor-relations.html">Investor Relations</a>
   </div>
   <a href="contact.html">Contact</a>
 </div>`;

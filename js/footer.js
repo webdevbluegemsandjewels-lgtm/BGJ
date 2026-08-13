@@ -23,6 +23,7 @@ const FOOTER_HTML = `
         <ul>
           <li><a href="certifications.html">Certifications</a></li>
           <li><a href="events.html">Events &amp; Exhibitions</a></li>
+          <li><a href="investor-relations.html">Investor Relations</a></li>
           <li><a href="products.html">Product Categories</a></li>
           <li><a href="contact.html">Visit the Factory</a></li>
         </ul>

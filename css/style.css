@@ -277,11 +277,15 @@ p{ margin:0; }
 @keyframes driftBg{ from{ transform:translate3d(0,0,0) scale(1);} to{ transform:translate3d(-2%,2%,0) scale(1.06);} }
 .hero-photo{ position:absolute; inset:0; z-index:-3; overflow:hidden; background:var(--navy-950); }
 .hero-photo img{
-  width:100%; height:100%; object-fit:cover;
+  position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
   transform:scale(1.08); animation:kenBurns 28s ease-in-out infinite alternate;
 }
 @keyframes kenBurns{ from{ transform:scale(1.08) translate(0,0); } to{ transform:scale(1.18) translate(-1.5%,-1.5%); } }
-.hero-photo video{ width:100%; height:100%; object-fit:cover; }
+.hero-photo video{
+  position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+  opacity:0; transition:opacity .8s ease;
+}
+.hero-photo video.is-ready{ opacity:1; }
 .hero-scrim{
   position:absolute; inset:0; z-index:-2;
   background:linear-gradient(180deg, rgba(22,20,15,.55) 0%, rgba(22,20,15,.3) 40%, rgba(22,20,15,.5) 75%, rgba(22,20,15,.72) 100%);
@@ -736,6 +740,118 @@ a.card:hover .card-arrow{ background:var(--gold-500); border-color:var(--gold-50
   animation:ping 2.4s ease-out infinite;
 }
 @keyframes ping{ 0%{ transform:scale(.4); opacity:1;} 100%{ transform:scale(2.2); opacity:0;} }
+/* ============================================================
+   INVESTOR RELATIONS — full-bleed image + glass content panel
+   ============================================================ */
+.ir-hero{
+  position:relative; min-height:100vh; min-height:100dvh; display:flex; align-items:center; justify-content:center;
+  overflow:hidden; isolation:isolate; text-align:center;
+}
+.ir-hero-bg{ position:absolute; inset:0; z-index:0; background:var(--ink); overflow:hidden; }
+.ir-hero-bg img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+.ir-hero-bg video{
+  position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+  opacity:0; transition:opacity .8s ease;
+}
+.ir-hero-bg video.is-ready{ opacity:1; }
+.ir-hero-overlay{
+  position:absolute; inset:0; z-index:1;
+  background:linear-gradient(180deg, rgba(22,20,15,.35) 0%, rgba(22,20,15,.55) 55%, rgba(22,20,15,.92) 100%);
+}
+.ir-hero-content{ position:relative; z-index:2; padding:6rem 0 4rem; }
+.ir-hero-content .breadcrumb a{ color:var(--white); opacity:.7; transition:opacity .3s; }
+.ir-hero-content .breadcrumb a:hover{ opacity:1; color:var(--gold-300); }
+.ir-hero-content .breadcrumb span{ color:var(--gold-300); }
+.ir-hero-content h1{
+  color:var(--white); font-size:clamp(2.2rem,5vw,3.6rem); margin-top:.7rem;
+  text-shadow:0 4px 30px rgba(0,0,0,.45);
+}
+.ir-hero-content .ir-hero-sub{
+  color:rgba(243,238,228,.85); font-size:clamp(1rem,1.6vw,1.15rem); line-height:1.6;
+  max-width:640px; margin:1.1rem auto 0;
+  text-shadow:0 2px 16px rgba(0,0,0,.4);
+}
+.ir-section{
+  position:relative; z-index:2; min-height:100vh;
+  display:flex; align-items:center; justify-content:center;
+  padding:6rem 0; margin-top:-4.5rem;
+  background:url('../assets/investbg.png') center/cover no-repeat;
+}
+.ir-section .wrap{ width:100%; }
+.ir-panel{
+  border-radius:16px;
+  background:linear-gradient(180deg, rgba(22,20,15,.92) 0%, rgba(22,20,15,.88) 100%);
+  backdrop-filter:blur(18px) saturate(140%);
+  -webkit-backdrop-filter:blur(18px) saturate(140%);
+  border:1px solid rgba(243,238,228,.14);
+  box-shadow:0 30px 80px -30px rgba(22,20,15,.6);
+  padding:2.4rem clamp(1.2rem,3vw,2.8rem) 2.8rem;
+}
+.ir-tabs{
+  display:flex; flex-wrap:wrap; justify-content:center; gap:.6rem; padding-bottom:1.8rem; margin-bottom:1.8rem;
+  border-bottom:1px solid rgba(243,238,228,.14);
+}
+.ir-tab{
+  all:unset; cursor:pointer; box-sizing:border-box;
+  padding:.65rem 1.3rem; border-radius:30px; border:1px solid rgba(243,238,228,.18);
+  font-family:var(--sans); font-size:.72rem; letter-spacing:.08em; text-transform:uppercase;
+  color:rgba(243,238,228,.75); transition:background .3s,color .3s,border-color .3s;
+  white-space:nowrap;
+}
+.ir-tab:hover{ border-color:var(--gold-300); color:var(--white); }
+.ir-tab.active{ background:var(--gold-500); border-color:var(--gold-500); color:var(--white); }
+.ir-tab-panel{ display:none; }
+.ir-tab-panel.active{ display:block; }
+.ir-empty{
+  padding:3.2rem 1rem; text-align:center; color:rgba(243,238,228,.6);
+  font-family:var(--serif); font-style:italic; font-size:1.1rem;
+  border:1px dashed rgba(243,238,228,.18); border-radius:10px;
+}
+.ir-coming-soon{
+  color:var(--gold-300); font-style:normal; font-family:var(--sans);
+  font-size:.8rem; font-weight:500; letter-spacing:.22em; text-transform:uppercase;
+}
+.ir-accordion{ display:flex; flex-direction:column; gap:.7rem; }
+.ir-item{
+  border:1px solid rgba(243,238,228,.14); border-radius:10px; overflow:hidden;
+  background:rgba(243,238,228,.04); transition:border-color .3s,background .3s;
+}
+.ir-item.open{ border-color:var(--gold-400); background:rgba(169,130,76,.12); }
+.ir-item-head{
+  all:unset; box-sizing:border-box; display:flex; width:100%; cursor:pointer;
+  align-items:center; justify-content:space-between; padding:1.1rem 1.4rem;
+  font-family:var(--sans); font-size:.94rem; color:var(--white);
+}
+.ir-item-head .chevron{
+  transition:transform .3s var(--ease); color:var(--gold-300); font-size:.8rem;
+  flex-shrink:0; margin-left:1rem;
+}
+.ir-item.open .ir-item-head .chevron{ transform:rotate(180deg); }
+.ir-item-body{ max-height:0; overflow:hidden; transition:max-height .4s var(--ease-soft); }
+.ir-item.open .ir-item-body{ max-height:600px; }
+.ir-doc-table{ width:100%; border-collapse:collapse; }
+.ir-doc-table th{
+  text-align:left; padding:.9rem 1.4rem; font-family:var(--sans); font-size:.64rem; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--gold-300);
+  border-top:1px solid rgba(243,238,228,.14); border-bottom:1px solid rgba(243,238,228,.14);
+}
+.ir-doc-table td{
+  padding:1rem 1.4rem; font-size:.9rem; color:rgba(243,238,228,.92);
+  border-bottom:1px solid rgba(243,238,228,.08);
+}
+.ir-doc-table tr:last-child td{ border-bottom:none; }
+.ir-download-btn{
+  display:inline-flex; align-items:center; gap:.5em; padding:.55rem 1.1rem; border-radius:4px;
+  background:var(--gold-500); color:var(--white); font-size:.7rem; letter-spacing:.08em; text-transform:uppercase;
+  transition:background .3s,transform .3s;
+}
+.ir-download-btn:hover{ background:var(--gold-400); transform:translateY(-2px); }
+@media(max-width:640px){
+  .ir-panel{ padding:1.6rem 1.1rem 2rem; border-radius:12px; }
+  .ir-section{ margin-top:-3rem; }
+  .ir-doc-table{ font-size:.82rem; }
+  .ir-doc-table th,.ir-doc-table td{ padding:.7rem .9rem; }
+}
 /* number badge for exhibitions timeline */
 .year-badge{
   display:inline-block; font-family:var(--serif); font-size:.8rem; letter-spacing:.1em;
