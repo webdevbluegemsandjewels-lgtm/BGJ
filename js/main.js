@@ -287,6 +287,208 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }, { passive: true });
   }
+  /* ---- past events (liquid-glass morphing blob showcase) ---- */
+  const peShowcase = document.getElementById('pe-showcase');
+  if (peShowcase) {
+    const peEvents = [
+      {
+        title: 'The BOJ Show 2026',
+        exhibition: 'The BOJ Show — Business of Jewellery',
+        location: 'New Delhi, India',
+        year: '2026',
+        desc: 'Blue Gems and Jewels took part in The BOJ Show 2026 in New Delhi, presenting refined jewellery collections to retailers and buyers for focused, relationship-led trade conversations. The showcase reflected our continued commitment to design consistency and manufacturing discipline.',
+        images: ['Past Events/29 April  2026 the boj delhi taj 1.jpg', 'Past Events/29 April  2026 the boj delhi taj 2.jpg']
+      },
+      {
+        title: 'Prêt by Couture 2026',
+        exhibition: 'Prêt by Couture India',
+        location: 'Mumbai, India',
+        year: '2026',
+        desc: 'At Prêt by Couture India 2026 in Mumbai, Blue Gems and Jewels presented a curated selection of contemporary, retailer-ready fine jewellery. The platform allowed us to connect directly with retailers seeking modern, wearable design.',
+        images: ['Past Events/19 feb 2026 pret by couture, mumbai grand hyat.jpg']
+      },
+      {
+        title: 'Couture India 2025',
+        exhibition: 'Couture India Jewellery Show',
+        location: 'New Delhi, India',
+        year: '2025',
+        desc: 'Blue Gems and Jewels exhibited at Couture India 2025 in New Delhi, presenting distinctive designs and fine finishing to a premium retail audience. The show reinforced our focus on proportion, setting, and polish.',
+        images: ['Past Events/Couture 2025 delhi_.jpg']
+      },
+      {
+        title: 'IGI D Show 2025',
+        exhibition: 'IGI D Show',
+        location: 'Goa, India',
+        year: '2025',
+        desc: 'Blue Gems and Jewels participated in the IGI D Show 2025 in Goa, showcasing diamond jewellery crafted to meet recognised gemological standards. The exhibition connected us with buyers who value certified quality and craftsmanship.',
+        images: ['Past Events/IGI D show goa, 2025.jpg']
+      },
+      {
+        title: 'Prêt by Couture 2025',
+        exhibition: 'Prêt by Couture India',
+        location: 'India',
+        year: '2025',
+        desc: 'Blue Gems and Jewels joined Prêt by Couture India in February 2025, presenting modern, wearable fine jewellery aligned with contemporary retail preferences. The showcase highlighted our design versatility and finishing standards.',
+        images: ['Past Events/Feb 2025 pret by couture_.jpg']
+      },
+      {
+        title: 'IIJS Signature 2024',
+        exhibition: 'IIJS Bharat — Signature',
+        location: 'Mumbai, India',
+        year: '2024',
+        desc: 'Blue Gems and Jewels exhibited at IIJS Bharat — Signature 2024 in Mumbai, presenting design-led collections at the opening trade platform of the calendar. The show provided an early opportunity for focused trade conversations with retailers.',
+        images: ['Past Events/Iijs signature 2024 bombay.jpg']
+      },
+      {
+        title: 'IIJS Tritiya 2024',
+        exhibition: 'IIJS Bharat — Tritiya',
+        location: 'Bengaluru, India',
+        year: '2024',
+        desc: 'Blue Gems and Jewels participated in IIJS Bharat — Tritiya 2024 in Bengaluru, connecting with South Indian retail markets and showcasing collections suited to regional demand. The exhibition reflected our commitment to serving diverse retail tastes.',
+        images: ['Past Events/Iijs tritya banglore 2024.jpg']
+      },
+      {
+        title: 'IGI D Show 2024',
+        exhibition: 'IGI D Show',
+        location: 'Goa, India',
+        year: '2024',
+        desc: 'Blue Gems and Jewels presented its diamond jewellery collections at the IGI D Show 2024 in Goa, an exhibition centred on certified diamond craftsmanship. The platform allowed us to engage buyers who prioritise gemological trust.',
+        images: ['Past Events/IGI D show goa, 2024.jpg']
+      },
+      {
+        title: 'IIJS 2022',
+        exhibition: 'India International Jewellery Show',
+        location: 'India',
+        year: '2022',
+        desc: "Blue Gems and Jewels took part in IIJS 2022, one of India's largest B2B jewellery exhibitions, presenting its collections to manufacturers, retailers, and exporters nationwide. The exhibition marked an important platform for showcasing our manufacturing capability.",
+        images: ['Past Events/Iijs 2022 IMAGE 1.jpg', 'Past Events/Iijs 2022 IMAGE 2.jpg']
+      }
+    ];
+    const peTotal = peEvents.length;
+    const peTextEl = document.getElementById('pe-text');
+    const peTitleEl = document.getElementById('pe-title');
+    const peExhibitionEl = document.getElementById('pe-exhibition');
+    const peLocationEl = document.getElementById('pe-location');
+    const peYearEl = document.getElementById('pe-year');
+    const peDescEl = document.getElementById('pe-desc');
+    const peCurrentEl = document.getElementById('pe-current');
+    const peImgA = document.getElementById('pe-image-a');
+    const peImgB = document.getElementById('pe-image-b');
+    const peDotsWrap = document.getElementById('pe-dots');
+    const peImgDotsWrap = document.getElementById('pe-img-dots');
+    document.getElementById('pe-total').textContent = String(peTotal).padStart(2, '0');
+
+    let peActive = 0;
+    let peImgActive = 0;
+    let peSwitching = false;
+    let peShowingA = true;
+
+    peEvents.forEach(() => {
+      const dot = document.createElement('button');
+      dot.type = 'button';
+      dot.className = 'pe-dot-btn';
+      peDotsWrap.appendChild(dot);
+    });
+    const peDots = Array.from(peDotsWrap.children);
+
+    const peSetImage = (path) => {
+      const showEl = peShowingA ? peImgB : peImgA;
+      const hideEl = peShowingA ? peImgA : peImgB;
+      showEl.src = supabaseImage(path);
+      showEl.classList.add('active');
+      hideEl.classList.remove('active');
+      peShowingA = !peShowingA;
+    };
+
+    const peRenderImgDots = () => {
+      peImgDotsWrap.innerHTML = '';
+      const images = peEvents[peActive].images;
+      if (images.length < 2) return;
+      images.forEach((_, i) => {
+        const dot = document.createElement('button');
+        dot.type = 'button';
+        dot.className = 'pe-img-dot' + (i === peImgActive ? ' active' : '');
+        dot.addEventListener('click', () => { peGoToImage(i); peResetAutoplay(); });
+        peImgDotsWrap.appendChild(dot);
+      });
+    };
+
+    const peGoToImage = (i) => {
+      const images = peEvents[peActive].images;
+      peImgActive = ((i % images.length) + images.length) % images.length;
+      peSetImage(images[peImgActive]);
+      Array.from(peImgDotsWrap.children).forEach((d, idx) => d.classList.toggle('active', idx === peImgActive));
+    };
+
+    const peApplyText = () => {
+      const ev = peEvents[peActive];
+      peTitleEl.textContent = ev.title;
+      peExhibitionEl.textContent = ev.exhibition;
+      peLocationEl.textContent = ev.location;
+      peYearEl.textContent = ev.year;
+      peDescEl.textContent = ev.desc;
+      peCurrentEl.textContent = String(peActive + 1).padStart(2, '0');
+      peDots.forEach((d, i) => d.classList.toggle('active', i === peActive));
+    };
+
+    const peGoTo = (index) => {
+      if (peSwitching) return;
+      peActive = ((index % peTotal) + peTotal) % peTotal;
+      peImgActive = 0;
+      peSwitching = true;
+      peTextEl.classList.add('switching');
+      setTimeout(() => {
+        peApplyText();
+        peSetImage(peEvents[peActive].images[0]);
+        peRenderImgDots();
+        peTextEl.classList.remove('switching');
+        setTimeout(() => { peSwitching = false; }, 350);
+      }, 250);
+    };
+    const peNext = () => peGoTo(peActive + 1);
+    const pePrev = () => peGoTo(peActive - 1);
+
+    peApplyText();
+    peImgA.src = supabaseImage(peEvents[0].images[0]);
+    peImgA.classList.add('active');
+    peRenderImgDots();
+
+    document.getElementById('pe-next').addEventListener('click', () => { peNext(); peResetAutoplay(); });
+    document.getElementById('pe-prev').addEventListener('click', () => { pePrev(); peResetAutoplay(); });
+    peDots.forEach((d, i) => d.addEventListener('click', () => { peGoTo(i); peResetAutoplay(); }));
+
+    /* autoplay: steps through every image of the current event before
+       moving on to the next event, so text only changes once all
+       images for that event have been shown */
+    let peAutoplayTimer = null;
+    const peTick = () => {
+      const images = peEvents[peActive].images;
+      if (peImgActive < images.length - 1) {
+        peGoToImage(peImgActive + 1);
+      } else {
+        peNext();
+      }
+    };
+    const peStartAutoplay = () => { peAutoplayTimer = setInterval(peTick, 4200); };
+    const peStopAutoplay = () => { if (peAutoplayTimer) clearInterval(peAutoplayTimer); };
+    const peResetAutoplay = () => { peStopAutoplay(); peStartAutoplay(); };
+    peStartAutoplay();
+    peShowcase.addEventListener('mouseenter', peStopAutoplay);
+    peShowcase.addEventListener('mouseleave', peStartAutoplay);
+
+    /* touch swipe on mobile */
+    let peTouchStartX = 0;
+    peShowcase.addEventListener('touchstart', (e) => {
+      peTouchStartX = e.touches[0].clientX;
+    }, { passive: true });
+    peShowcase.addEventListener('touchend', (e) => {
+      const dx = e.changedTouches[0].clientX - peTouchStartX;
+      if (Math.abs(dx) > 40) {
+        dx < 0 ? peNext() : pePrev();
+        peResetAutoplay();
+      }
+    }, { passive: true });
+  }
   /* ---- product constellation (circular auto-rotating showcase) ---- */
   const orbitShowcase = document.getElementById('orbit-showcase');
   if (orbitShowcase) {

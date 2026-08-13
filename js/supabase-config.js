@@ -11,7 +11,8 @@ const SUPABASE_URL = 'https://czgytzchdqqigmrfwekp.supabase.co';
 const SUPABASE_IMAGES_BUCKET = 'Images';
 
 function supabaseImage(path) {
-  return `${SUPABASE_URL}/storage/v1/object/public/${SUPABASE_IMAGES_BUCKET}/${path}`;
+  const encoded = path.split('/').map(encodeURIComponent).join('/');
+  return `${SUPABASE_URL}/storage/v1/object/public/${SUPABASE_IMAGES_BUCKET}/${encoded}`;
 }
 
 // Bucket "documents" for downloadable PDFs (financial statements, reports, etc).
