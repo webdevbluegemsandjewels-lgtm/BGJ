@@ -398,6 +398,13 @@ p{ margin:0; }
   font-family:var(--sans); font-size:.62rem; letter-spacing:.14em; text-transform:uppercase; color:var(--gold-400);
 }
 .card-logo img{ width:100%; height:100%; object-fit:cover; }
+/* "How the Floor Works" process table — desktop only: breathing room
+   below the table gives the sticky section's scroll-reveal nudge more
+   distance to work with, so the last rows fully clear the viewport
+   before the next section takes over */
+@media(min-width:901px){
+  .pf-table{ margin-bottom:6rem; }
+}
 /* ---------- certification stacked-card carousel ---------- */
 .cert-showcase{
   display:grid; grid-template-columns:380px 1fr; gap:4.5rem; align-items:center;
