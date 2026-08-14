@@ -53,6 +53,11 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
   };
+  /* the home page is the single most likely destination from anywhere
+     on the site (logo click, "Home" nav link) — always start loading
+     its hero in the background as soon as any other page opens,
+     instead of waiting for the visitor to hover the link first */
+  if (document.body.getAttribute('data-page') !== 'home') preloadPage('index.html');
   document.querySelectorAll('a[href$=".html"]').forEach(a => {
     const href = a.getAttribute('href');
     a.addEventListener('mouseenter', () => preloadPage(href), { once: true });
