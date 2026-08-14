@@ -506,9 +506,10 @@ p{ margin:0; }
   transition:width .45s var(--ease-soft), border-color .4s;
 }
 /* .pe-active gets its width set inline by JS, sized to the real photo's
-   aspect ratio so the margin either side of it stays snug; this is the
-   fallback before that first measurement lands */
-.pe-pillar.pe-active{ width:56%; border-color:rgba(243,238,228,.22); }
+   aspect ratio so the margin either side of it stays snug; this is only
+   the backstop if JS never runs — kept modest so it can never overflow
+   the row and clip a neighbouring pillar out of the clickable area */
+.pe-pillar.pe-active{ width:40%; border-color:rgba(243,238,228,.22); }
 .pe-pillar.pe-inactive{ width:64px; }
 .pe-pillar:focus-visible{ border-color:var(--gold-400); }
 /* blurred, oversized copy of the same photo fills the frame behind the
@@ -834,8 +835,16 @@ a.card:hover .card-arrow{ background:var(--gold-500); border-color:var(--gold-50
    (.tile.wide, .tile.photo img, .tile.photo::before) so it wins on
    source order instead of silently losing to them. */
 .tile.tf-tile{ aspect-ratio:auto; background:none; }
+/* .stack-section .tile.wide{aspect-ratio:16/7} (≤768px) outranks the
+   rule above on specificity alone (3 classes vs 2) — beat it here so
+   mobile can't silently re-crop these tiles back to a fixed box */
+.stack-section .tile.wide.tf-tile{ aspect-ratio:auto; }
 .tile.tf-tile img{ position:static; width:100%; height:auto; object-fit:contain; }
 .tile.tf-tile::before{ content:none; }
+/* .tile.photo:hover img{transform:scale(1.1)} still matched these (they
+   keep the .photo class) — zooming in past the tile's overflow:hidden
+   edge cropped the image on hover on desktop. Full image, always. */
+.tile.photo.tf-tile:hover img{ transform:none; }
 /* facet svg overlay reused as gem motif */
 .gem-mark{ color:var(--gold-500); width:34px; height:34px; }
 /* ============================================================
@@ -887,6 +896,16 @@ a.card:hover .card-arrow{ background:var(--gold-500); border-color:var(--gold-50
   .gallery .tile-label{ left:.7rem; bottom:.7rem; right:.7rem; font-size:.82rem; }
   .gallery .tile-label small{ font-size:.55rem; letter-spacing:.14em; margin-bottom:.3rem; }
   .gallery p{ font-size:.82rem; }
+  /* Media Coverage — mobile only: one full, uncropped image at a time,
+     horizontal swipe/scroll to the next instead of stacking vertically */
+  .grid.mc-scroll{
+    display:flex; overflow-x:auto; scroll-snap-type:x mandatory;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none; -ms-overflow-style:none;
+    gap:0 !important; max-width:100% !important; margin-left:0 !important; margin-right:0 !important;
+  }
+  .mc-scroll::-webkit-scrollbar{ display:none; height:0; width:0; }
+  .mc-scroll .tile{ flex:0 0 100%; scroll-snap-align:center; scroll-snap-stop:always; }
   /* "What We Manufacture" — locked 2x2 puzzle mosaic on mobile */
   .puzzle{ grid-template-columns:repeat(2,1fr) !important; gap:3px !important; }
   .puzzle .tile{ aspect-ratio:1/1; border-radius:0; border:none; }

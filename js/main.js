@@ -486,10 +486,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const clearPillarWidth = (p) => { p.el.style.width = ''; };
     const computeActiveWidth = (p) => {
       if (window.innerWidth <= 640) return;
-      if (!p.img.naturalWidth || !p.img.naturalHeight) return;
       const stackRect = peStack.getBoundingClientRect();
       if (!stackRect.width || !stackRect.height) return;
-      const aspect = p.img.naturalWidth / p.img.naturalHeight;
+      /* fall back to a sensible landscape aspect until the real image
+         has decoded — bailing out here left the unclamped CSS fallback
+         width (56%) in place, which overflows the row and clips
+         whichever pillar lands near the edge (worst for pillars late
+         in the fetch queue, i.e. the last one or two in the list) */
+      const aspect = (p.img.naturalWidth && p.img.naturalHeight)
+        ? p.img.naturalWidth / p.img.naturalHeight
+        : 1.4;
       const reserved = (pillars.length - 1) * (PE_INACTIVE_W + PE_GAP);
       const maxWidth = Math.max(220, stackRect.width - reserved - PE_GAP);
       const minWidth = stackRect.width * 0.28;
@@ -535,7 +541,14 @@ document.addEventListener('DOMContentLoaded', () => {
       ignoreScrollAuto = true;
       render();
       if (window.innerWidth <= 640) pillars[i].el.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-      setTimeout(() => { ignoreScrollAuto = false; }, 500);
+      /* generous safety-net timeout — the primary way this clears is the
+         next touchstart (below). Boundary pillars (first/last) can't
+         actually be scrolled to dead-center since there's no trailing
+         content, so the browser's settle-scroll can run past a short
+         timeout here; if it did, the live "center" detector would
+         immediately reassign activeIndex to a neighbour and undo the
+         tap the moment it re-armed. */
+      setTimeout(() => { ignoreScrollAuto = false; }, 1200);
     };
 
     pillars.forEach((p, i) => {
@@ -596,6 +609,13 @@ document.addEventListener('DOMContentLoaded', () => {
       scrollHint.querySelector('span').textContent = atEnd ? 'End' : 'More';
     };
     const pillarAtScrollCenter = () => {
+      /* at either scroll limit there's no trailing/leading content left
+         to center against, so the nearest-to-center math can never
+         actually land on the first/last pillar — snap to it directly
+         whenever the strip is scrolled all the way to that edge */
+      const maxScroll = peStack.scrollWidth - peStack.clientWidth;
+      if (peStack.scrollLeft <= 2) return 0;
+      if (peStack.scrollLeft >= maxScroll - 2) return pillars.length - 1;
       const centerX = peStack.getBoundingClientRect().left + peStack.clientWidth / 2;
       let closestIndex = activeIndex;
       let closestDist = Infinity;
@@ -700,11 +720,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const testimonialCarousel = document.getElementById('testimonial-carousel');
   if (testimonialCarousel) {
     const testimonials = [
-      { quote: "We've worked with several manufacturing partners over the years, but Blue Gems and Jewels stands out for its consistency, craftsmanship, and attention to detail. Every piece reflects the standards our clientele expects.", attrib: 'Third-Generation Jeweller' },
-      { quote: "Their team understands the expectations of premium jewellery retail. From design execution to final finishing, the quality has always been exceptional.", attrib: 'Owner of a Luxury Jewellery Boutique' },
-      { quote: "Reliability is rare in this industry, and Blue Gems and Jewels has earned our complete trust. They consistently deliver products that exceed expectations.", attrib: 'Leading Jewellery Retailer' },
-      { quote: "Our relationship with Blue Gems and Jewels has been built on years of trust, transparency, and outstanding craftsmanship. They have become an integral part of our business.", attrib: 'Established Jewellery Entrepreneur' },
-      { quote: "When serving discerning customers, quality cannot be compromised. Blue Gems and Jewels has consistently helped us maintain the highest standards.", attrib: 'Premium Jewellery Business Owner' }
+      { quote: "We've worked with several manufacturing partners over the years, but Blue Gems and Jewels stands out for its consistency, craftsmanship, and attention to detail. Every piece reflects the standards our clientele expects.", attrib: 'Third-Generation Jeweller from Delhi' },
+      { quote: "Their team understands the expectations of premium jewellery retail. From design execution to final finishing, the quality has always been exceptional.", attrib: "Bengaluru's Leading Luxury Jewellery Boutique" },
+      { quote: "Reliability is rare in this industry, and Blue Gems and Jewels has earned our complete trust. They consistently deliver products that exceed expectations.", attrib: 'Leading Jewellery Retailer from Chennai' },
+      { quote: "Our relationship with Blue Gems and Jewels has been built on years of trust, transparency, and outstanding craftsmanship. They have become an integral part of our business.", attrib: "Pune's Top Jewellery Entrepreneur" },
+      { quote: "When serving discerning customers, quality cannot be compromised. Blue Gems and Jewels has consistently helped us maintain the highest standards.", attrib: 'Premium Jewellery Business Owner from Hyderabad' }
     ];
     const total = testimonials.length;
     const slide = document.getElementById('testimonial-slide');
