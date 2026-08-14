@@ -602,12 +602,12 @@ p{ margin:0; }
   .pe-stack{
     gap:.3rem; height:44vh; min-height:280px;
     overflow-x:auto; overflow-y:hidden;
-    scroll-snap-type:x proximity;
+    scroll-behavior:smooth; touch-action:pan-x;
     -webkit-overflow-scrolling:touch;
     scrollbar-width:none; -ms-overflow-style:none;
   }
   .pe-stack::-webkit-scrollbar{ display:none; height:0; width:0; }
-  .pe-pillar{ flex:0 0 auto; width:28px; scroll-snap-align:center; }
+  .pe-pillar{ flex:0 0 auto; width:28px; }
   .pe-pillar.pe-active{ width:70vw; max-width:300px; }
   .pe-pillar.pe-inactive{ width:28px; }
   .pe-pillar-tag{ font-size:.74rem; padding:.8rem .45rem; }

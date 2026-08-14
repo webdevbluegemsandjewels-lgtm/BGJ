@@ -482,18 +482,44 @@ document.addEventListener('DOMContentLoaded', () => {
       peRenderRaf = requestAnimationFrame(() => { peRenderRaf = null; applyRender(); });
     };
 
+    /* while true, the scroll listener's live "open whichever pillar is
+       centered" logic backs off — set right after a deliberate tap so
+       that pillar's own centering scroll doesn't get overridden mid-
+       animation by the very scroll it just triggered */
+    let ignoreScrollAuto = false;
+    const openPillar = (i) => {
+      activeIndex = i; hoverIndex = null;
+      ignoreScrollAuto = true;
+      render();
+      if (window.innerWidth <= 640) pillars[i].el.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+      setTimeout(() => { ignoreScrollAuto = false; }, 500);
+    };
+
     pillars.forEach((p, i) => {
       p.el.addEventListener('mouseenter', () => { hoverIndex = i; render(); });
       p.el.addEventListener('mouseleave', () => { hoverIndex = null; render(); });
       p.el.addEventListener('focus', () => { hoverIndex = i; render(); });
       p.el.addEventListener('blur', () => { hoverIndex = null; render(); });
-      p.el.addEventListener('click', () => {
-        activeIndex = i; hoverIndex = null; render();
-        if (window.innerWidth <= 640) p.el.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-      });
+      p.el.addEventListener('click', (e) => { if (!e.target.closest('.pe-info-btn')) openPillar(i); });
       p.el.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activeIndex = i; hoverIndex = null; render(); }
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openPillar(i); }
       });
+
+      /* touch browsers commonly cancel the synthetic "click" after any
+         scroll happens on an ancestor, which is exactly this stack —
+         so a real tap (no meaningful finger movement) is detected by
+         hand and used as the authoritative way to open a pillar */
+      let touchStartX = 0, touchStartY = 0, touchMoved = false;
+      p.el.addEventListener('touchstart', (e) => {
+        const t = e.touches[0];
+        touchStartX = t.clientX; touchStartY = t.clientY; touchMoved = false;
+        ignoreScrollAuto = false;
+      }, { passive: true });
+      p.el.addEventListener('touchmove', (e) => {
+        const t = e.touches[0];
+        if (Math.abs(t.clientX - touchStartX) > 8 || Math.abs(t.clientY - touchStartY) > 8) touchMoved = true;
+      }, { passive: true });
+      p.el.addEventListener('touchend', (e) => { if (!touchMoved && !e.target.closest('.pe-info-btn')) openPillar(i); });
     });
 
     applyRender();
@@ -543,7 +569,7 @@ document.addEventListener('DOMContentLoaded', () => {
       peScrollRaf = requestAnimationFrame(() => {
         peScrollRaf = null;
         updateScrollHint();
-        if (window.innerWidth > 640) return;
+        if (window.innerWidth > 640 || ignoreScrollAuto) return;
         const idx = pillarAtScrollCenter();
         if (idx !== activeIndex) { activeIndex = idx; hoverIndex = null; applyRender(); }
       });
