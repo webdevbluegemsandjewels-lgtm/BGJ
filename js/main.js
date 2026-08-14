@@ -297,10 +297,7 @@ document.addEventListener('DOMContentLoaded', () => {
         location: 'India',
         year: '2026',
         desc: "Blue Gems and Jewels took part in IIJS 2026, one of India's largest B2B jewellery exhibitions, presenting its collections to manufacturers, retailers, and exporters nationwide. The exhibition marked an important platform for showcasing our manufacturing capability.",
-        images: [
-          { src: 'Past Events/IIJS_Aug_2026 image 1.jpeg', position: 'top' },
-          { src: 'Past Events/IIJS_Aug_2026 image 2 .jpeg' }
-        ]
+        image: { src: 'Past Events/IIJS_Aug_2026 image 1.jpeg', position: 'top' }
       },
       {
         title: 'The BOJ Show 2026',
@@ -308,7 +305,7 @@ document.addEventListener('DOMContentLoaded', () => {
         location: 'New Delhi, India',
         year: '2026',
         desc: 'Blue Gems and Jewels took part in The BOJ Show 2026 in New Delhi, presenting refined jewellery collections to retailers and buyers for focused, relationship-led trade conversations. The showcase reflected our continued commitment to design consistency and manufacturing discipline.',
-        images: ['Past Events/29 April  2026 the boj delhi taj 1.jpg', 'Past Events/29 April  2026 the boj delhi taj 2.jpg']
+        image: 'Past Events/29 April  2026 the boj delhi taj 1.jpg'
       },
       {
         title: 'Prêt by Couture 2026',
@@ -316,7 +313,7 @@ document.addEventListener('DOMContentLoaded', () => {
         location: 'Mumbai, India',
         year: '2026',
         desc: 'At Prêt by Couture India 2026 in Mumbai, Blue Gems and Jewels presented a curated selection of contemporary, retailer-ready fine jewellery. The platform allowed us to connect directly with retailers seeking modern, wearable design.',
-        images: ['Past Events/19 feb 2026 pret by couture, mumbai grand hyat.jpg']
+        image: 'Past Events/19 feb 2026 pret by couture, mumbai grand hyat.jpg'
       },
       {
         title: 'Couture India 2025',
@@ -324,7 +321,7 @@ document.addEventListener('DOMContentLoaded', () => {
         location: 'New Delhi, India',
         year: '2025',
         desc: 'Blue Gems and Jewels exhibited at Couture India 2025 in New Delhi, presenting distinctive designs and fine finishing to a premium retail audience. The show reinforced our focus on proportion, setting, and polish.',
-        images: ['Past Events/Couture 2025 delhi_.jpg']
+        image: 'Past Events/Couture 2025 delhi_.jpg'
       },
       {
         title: 'IGI D Show 2025',
@@ -332,7 +329,7 @@ document.addEventListener('DOMContentLoaded', () => {
         location: 'Goa, India',
         year: '2025',
         desc: 'Blue Gems and Jewels participated in the IGI D Show 2025 in Goa, showcasing diamond jewellery crafted to meet recognised gemological standards. The exhibition connected us with buyers who value certified quality and craftsmanship.',
-        images: ['Past Events/IGI D show goa, 2025.jpg']
+        image: 'Past Events/IGI D show goa, 2025.jpg'
       },
       {
         title: 'Prêt by Couture 2025',
@@ -340,7 +337,7 @@ document.addEventListener('DOMContentLoaded', () => {
         location: 'India',
         year: '2025',
         desc: 'Blue Gems and Jewels joined Prêt by Couture India in February 2025, presenting modern, wearable fine jewellery aligned with contemporary retail preferences. The showcase highlighted our design versatility and finishing standards.',
-        images: ['Past Events/Feb 2025 pret by couture_.jpg']
+        image: 'Past Events/Feb 2025 pret by couture_.jpg'
       },
       {
         title: 'IIJS Signature 2024',
@@ -348,7 +345,7 @@ document.addEventListener('DOMContentLoaded', () => {
         location: 'Mumbai, India',
         year: '2024',
         desc: 'Blue Gems and Jewels exhibited at IIJS Bharat — Signature 2024 in Mumbai, presenting design-led collections at the opening trade platform of the calendar. The show provided an early opportunity for focused trade conversations with retailers.',
-        images: ['Past Events/Iijs signature 2024 bombay.jpg']
+        image: 'Past Events/Iijs signature 2024 bombay.jpg'
       },
       {
         title: 'IIJS Tritiya 2024',
@@ -356,7 +353,7 @@ document.addEventListener('DOMContentLoaded', () => {
         location: 'Bengaluru, India',
         year: '2024',
         desc: 'Blue Gems and Jewels participated in IIJS Bharat — Tritiya 2024 in Bengaluru, connecting with South Indian retail markets and showcasing collections suited to regional demand. The exhibition reflected our commitment to serving diverse retail tastes.',
-        images: ['Past Events/Iijs tritya banglore 2024.jpg']
+        image: 'Past Events/Iijs tritya banglore 2024.jpg'
       },
       {
         title: 'IGI D Show 2024',
@@ -364,7 +361,7 @@ document.addEventListener('DOMContentLoaded', () => {
         location: 'Goa, India',
         year: '2024',
         desc: 'Blue Gems and Jewels presented its diamond jewellery collections at the IGI D Show 2024 in Goa, an exhibition centred on certified diamond craftsmanship. The platform allowed us to engage buyers who prioritise gemological trust.',
-        images: ['Past Events/IGI D show goa, 2024.jpg']
+        image: 'Past Events/IGI D show goa, 2024.jpg'
       },
       {
         title: 'IIJS 2022',
@@ -372,7 +369,7 @@ document.addEventListener('DOMContentLoaded', () => {
         location: 'India',
         year: '2022',
         desc: "Blue Gems and Jewels took part in IIJS 2022, one of India's largest B2B jewellery exhibitions, presenting its collections to manufacturers, retailers, and exporters nationwide. The exhibition marked an important platform for showcasing our manufacturing capability.",
-        images: ['Past Events/Iijs 2022 IMAGE 1.jpg', 'Past Events/Iijs 2022 IMAGE 2.jpg']
+        image: 'Past Events/Iijs 2022 IMAGE 1.jpg'
       }
     ];
     const peImgSrc = (img) => typeof img === 'string' ? img : img.src;
@@ -385,12 +382,12 @@ document.addEventListener('DOMContentLoaded', () => {
       el.setAttribute('role', 'button');
       el.setAttribute('aria-label', ev.title);
 
-      const imgA = document.createElement('img');
-      imgA.className = 'pe-pillar-img';
-      imgA.alt = ev.title;
-      const imgB = document.createElement('img');
-      imgB.className = 'pe-pillar-img';
-      imgB.alt = ev.title;
+      const bg = document.createElement('div');
+      bg.className = 'pe-pillar-bg active';
+
+      const img = document.createElement('img');
+      img.className = 'pe-pillar-img active';
+      img.alt = ev.title;
 
       const scrim = document.createElement('div');
       scrim.className = 'pe-pillar-scrim';
@@ -407,76 +404,151 @@ document.addEventListener('DOMContentLoaded', () => {
         <span class="pe-pillar-exhibition">${ev.exhibition}</span>
         <div class="pe-pillar-meta"><span>${ev.location}</span><span class="pe-meta-dot">&middot;</span><span>${ev.year}</span></div>
         <p class="pe-pillar-desc">${ev.desc}</p>
-        <div class="pe-pillar-imgdots"></div>
       `;
 
-      el.append(imgA, imgB, scrim, tag, detail);
+      const infoBtn = document.createElement('button');
+      infoBtn.type = 'button';
+      infoBtn.className = 'pe-info-btn';
+      infoBtn.textContent = 'i';
+      infoBtn.setAttribute('aria-label', `About ${ev.title}`);
+
+      const url = supabaseImage(peImgSrc(ev.image));
+      img.src = url;
+      img.style.objectPosition = peImgPosition(ev.image);
+      bg.style.backgroundImage = `url("${url}")`;
+
+      el.append(bg, img, scrim, tag, detail, infoBtn);
       peStack.appendChild(el);
 
-      return { el, ev, imgA, imgB, showingA: true, imgIndex: 0, dotsWrap: detail.querySelector('.pe-pillar-imgdots') };
-    });
+      const p = { el, ev, img, infoBtn, infoLocked: false };
+      img.addEventListener('load', () => { if (el.classList.contains('pe-active')) computeActiveWidth(p); }, { once: true });
 
-    const renderPillarDots = (p) => {
-      p.dotsWrap.innerHTML = '';
-      if (p.ev.images.length < 2) return;
-      p.ev.images.forEach((_, i) => {
-        const dot = document.createElement('span');
-        if (i === p.imgIndex) dot.classList.add('active');
-        p.dotsWrap.appendChild(dot);
+      infoBtn.addEventListener('mouseenter', () => el.classList.add('pe-info-open'));
+      infoBtn.addEventListener('mouseleave', () => { if (!p.infoLocked) el.classList.remove('pe-info-open'); });
+      infoBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        p.infoLocked = !p.infoLocked;
+        el.classList.toggle('pe-info-open', p.infoLocked);
       });
-    };
 
-    const setPillarImage = (p, index) => {
-      const images = p.ev.images;
-      p.imgIndex = ((index % images.length) + images.length) % images.length;
-      const img = images[p.imgIndex];
-      const showEl = p.showingA ? p.imgB : p.imgA;
-      const hideEl = p.showingA ? p.imgA : p.imgB;
-      showEl.src = supabaseImage(peImgSrc(img));
-      showEl.style.objectPosition = peImgPosition(img);
-      showEl.classList.add('active');
-      hideEl.classList.remove('active');
-      p.showingA = !p.showingA;
-      Array.from(p.dotsWrap.children).forEach((d, i) => d.classList.toggle('active', i === p.imgIndex));
-    };
-
-    pillars.forEach((p) => {
-      p.imgA.src = supabaseImage(peImgSrc(p.ev.images[0]));
-      p.imgA.style.objectPosition = peImgPosition(p.ev.images[0]);
-      p.imgA.classList.add('active');
-      renderPillarDots(p);
+      return p;
     });
+
+    /* on desktop/tablet the expanded panel's width adapts to the real
+       aspect ratio of its photo, so the blurred margin either side of
+       the (uncropped, letterboxed) image stays snug instead of a fixed
+       one-size-fits-all panel width leaving wide empty bars */
+    const PE_INACTIVE_W = 64;
+    const PE_GAP = 8;
+    const clearPillarWidth = (p) => { p.el.style.width = ''; };
+    const computeActiveWidth = (p) => {
+      if (window.innerWidth <= 640) return;
+      if (!p.img.naturalWidth || !p.img.naturalHeight) return;
+      const stackRect = peStack.getBoundingClientRect();
+      if (!stackRect.width || !stackRect.height) return;
+      const aspect = p.img.naturalWidth / p.img.naturalHeight;
+      const reserved = (pillars.length - 1) * (PE_INACTIVE_W + PE_GAP);
+      const maxWidth = Math.max(220, stackRect.width - reserved - PE_GAP);
+      const minWidth = stackRect.width * 0.28;
+      const idealWidth = stackRect.height * aspect;
+      const finalWidth = Math.min(maxWidth, Math.max(minWidth, idealWidth));
+      p.el.style.width = `${finalWidth}px`;
+    };
 
     let activeIndex = 0;
     let hoverIndex = null;
+    let peRenderRaf = null;
 
-    const render = () => {
+    const applyRender = () => {
       const displayIndex = hoverIndex !== null ? hoverIndex : activeIndex;
       pillars.forEach((p, i) => {
-        p.el.classList.toggle('pe-active', i === displayIndex);
-        p.el.classList.toggle('pe-inactive', i !== displayIndex);
+        const isDisplayed = i === displayIndex;
+        p.el.classList.toggle('pe-active', isDisplayed);
+        p.el.classList.toggle('pe-inactive', !isDisplayed);
+        if (isDisplayed) {
+          computeActiveWidth(p);
+        } else {
+          clearPillarWidth(p);
+          p.infoLocked = false;
+          p.el.classList.remove('pe-info-open');
+        }
       });
+    };
+    /* rAF-batched so rapid pointer movement across many strips (each
+       triggering mouseenter/mouseleave) only ever costs one layout
+       pass per frame instead of stacking up and lagging behind */
+    const render = () => {
+      if (peRenderRaf) return;
+      peRenderRaf = requestAnimationFrame(() => { peRenderRaf = null; applyRender(); });
     };
 
     pillars.forEach((p, i) => {
       p.el.addEventListener('mouseenter', () => { hoverIndex = i; render(); });
       p.el.addEventListener('mouseleave', () => { hoverIndex = null; render(); });
-      p.el.addEventListener('mousemove', (e) => {
-        if (p.ev.images.length < 2) return;
-        const rect = p.el.getBoundingClientRect();
-        const relX = (e.clientX - rect.left) / rect.width;
-        const idx = Math.min(p.ev.images.length - 1, Math.max(0, Math.floor(relX * p.ev.images.length)));
-        if (idx !== p.imgIndex) setPillarImage(p, idx);
-      });
       p.el.addEventListener('focus', () => { hoverIndex = i; render(); });
       p.el.addEventListener('blur', () => { hoverIndex = null; render(); });
-      p.el.addEventListener('click', () => { activeIndex = i; hoverIndex = null; render(); });
+      p.el.addEventListener('click', () => {
+        activeIndex = i; hoverIndex = null; render();
+        if (window.innerWidth <= 640) p.el.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+      });
       p.el.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activeIndex = i; hoverIndex = null; render(); }
       });
     });
 
-    render();
+    applyRender();
+
+    let peResizeTimer = null;
+    window.addEventListener('resize', () => {
+      clearTimeout(peResizeTimer);
+      peResizeTimer = setTimeout(() => {
+        const displayIndex = hoverIndex !== null ? hoverIndex : activeIndex;
+        if (window.innerWidth <= 640) pillars.forEach(clearPillarWidth);
+        else computeActiveWidth(pillars[displayIndex]);
+        updateScrollHint();
+      }, 150);
+    });
+
+    /* mobile: dragging/flicking the strip opens whichever pillar is
+       nearest the center as you scroll, live — no tap required — and
+       a small vertical cue on the right reads "More" until the strip
+       is scrolled all the way, then switches to "End" */
+    const scrollHint = document.getElementById('pe-scroll-hint');
+    const updateScrollHint = () => {
+      if (!scrollHint) return;
+      const maxScroll = peStack.scrollWidth - peStack.clientWidth;
+      if (window.innerWidth > 640 || maxScroll <= 4) {
+        scrollHint.style.display = 'none';
+        return;
+      }
+      scrollHint.style.display = '';
+      const atEnd = peStack.scrollLeft >= maxScroll - 4;
+      scrollHint.classList.toggle('pe-hint-end', atEnd);
+      scrollHint.querySelector('span').textContent = atEnd ? 'End' : 'More';
+    };
+    const pillarAtScrollCenter = () => {
+      const centerX = peStack.getBoundingClientRect().left + peStack.clientWidth / 2;
+      let closestIndex = activeIndex;
+      let closestDist = Infinity;
+      pillars.forEach((p, i) => {
+        const r = p.el.getBoundingClientRect();
+        const dist = Math.abs((r.left + r.width / 2) - centerX);
+        if (dist < closestDist) { closestDist = dist; closestIndex = i; }
+      });
+      return closestIndex;
+    };
+    let peScrollRaf = null;
+    peStack.addEventListener('scroll', () => {
+      if (peScrollRaf) return;
+      peScrollRaf = requestAnimationFrame(() => {
+        peScrollRaf = null;
+        updateScrollHint();
+        if (window.innerWidth > 640) return;
+        const idx = pillarAtScrollCenter();
+        if (idx !== activeIndex) { activeIndex = idx; hoverIndex = null; applyRender(); }
+      });
+    }, { passive: true });
+    updateScrollHint();
   }
   /* ---- product constellation (circular auto-rotating showcase) ---- */
   const orbitShowcase = document.getElementById('orbit-showcase');
