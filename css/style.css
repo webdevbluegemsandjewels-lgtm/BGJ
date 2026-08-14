@@ -427,6 +427,10 @@ p{ margin:0; }
   margin-bottom:1.4rem; overflow:hidden;
 }
 .cert-stack-logo img{ width:100%; height:100%; object-fit:contain; }
+/* full-bleed variant for cards whose art is a poster/photo rather than
+   a badge-style logo — image stretches edge to edge, no white margin */
+.cert-stack-logo--fill{ padding:0; background:none; }
+.cert-stack-logo--fill img{ object-fit:cover; }
 .cert-stack-foot{ display:flex; align-items:center; gap:.8em; }
 .cert-stack-num{ font-family:var(--serif); font-size:.85rem; color:var(--gold-300); letter-spacing:.1em; }
 .cert-stack-name{ color:var(--white); font-family:var(--serif); font-size:1rem; letter-spacing:.01em; }
@@ -468,7 +472,7 @@ p{ margin:0; }
   background:var(--ink);
   box-shadow:0 -30px 60px -30px rgba(22,20,15,.4);
 }
-.pe-wrap{ padding:2.4rem 0 3rem; }
+.pe-wrap{ padding:0 0 3rem; margin-top:-16px; }
 .pe-head{ margin-bottom:2.2rem; max-width:640px; }
 .pe-eyebrow{ color:var(--gold-300); }
 .pe-stack-wrap{ position:relative; }
@@ -658,12 +662,13 @@ p{ margin:0; }
   box-shadow:0 20px 40px -20px rgba(22,20,15,.18);
 }
 .founder-avatar{
-  width:88px; height:88px; border-radius:50%; margin-bottom:1.5rem;
+  width:140px; height:140px; border-radius:50%; margin-bottom:1.5rem;
   background:linear-gradient(155deg,var(--navy-700),var(--navy-900));
   border:1px solid var(--line);
   display:flex; align-items:center; justify-content:center; flex-shrink:0;
-  font-family:var(--serif); font-size:1.4rem; color:var(--gold-500);
+  overflow:hidden;
 }
+.founder-avatar img{ width:100%; height:100%; object-fit:cover; border-radius:50%; }
 .founder-card h3{ font-size:1.15rem; color:var(--ivory); }
 .founder-role{
   display:block; margin-top:.35rem; font-size:.66rem; letter-spacing:.16em;
@@ -691,7 +696,7 @@ p{ margin:0; }
   transition:background .3s,color .3s;
 }
 .founder-modal-close:hover{ background:var(--gold-100); color:var(--gold-500); }
-.founder-avatar-lg{ width:110px; height:110px; font-size:1.8rem; margin-bottom:1.5rem; }
+.founder-avatar-lg{ width:170px; height:170px; margin-bottom:1.5rem; }
 .founder-modal-panel h3{ font-size:1.4rem; color:var(--ivory); }
 .founder-modal-panel .founder-role{ margin-top:.4rem; }
 .founder-modal-panel p{ margin-top:1.4rem; color:var(--ivory-dim); line-height:1.75; font-size:.94rem; }
@@ -743,6 +748,14 @@ a.card:hover .card-arrow{ background:var(--gold-500); border-color:var(--gold-50
 .quote-block{ max-width:820px; margin:0 auto; text-align:center; }
 .quote-block p{ font-family:var(--serif); font-style:italic; font-size:clamp(1.3rem,2.6vw,1.9rem); color:var(--ivory); line-height:1.5; }
 .quote-block .attrib{ margin-top:1.6rem; font-family:var(--sans); font-size:.78rem; letter-spacing:.15em; text-transform:uppercase; color:var(--gold-400); }
+/* "What These Platforms Represent" closing quote — desktop only:
+   larger type, centered in the middle of the section instead of
+   sitting at the top like the other stack-sections */
+@media(min-width:901px){
+  .pe-final-quote{ justify-content:center; }
+  .pe-final-quote .quote-block{ max-width:960px; }
+  .pe-final-quote .quote-block p{ font-size:clamp(1.9rem,3.2vw,2.6rem); }
+}
 /* ============================================================
    TESTIMONIALS (sliding carousel — one centered at a time)
    ============================================================ */
@@ -777,7 +790,6 @@ a.card:hover .card-arrow{ background:var(--gold-500); border-color:var(--gold-50
 .band{ background:var(--white); }
 .band-gold{
   background:var(--white);
-  position:relative;
 }
 /* ============================================================
    GALLERY / VISUAL PLACEHOLDER TILES
@@ -815,12 +827,31 @@ a.card:hover .card-arrow{ background:var(--gold-500); border-color:var(--gold-50
 .tile.photo .tile-label small{ color:var(--gold-300); }
 .tile.tall{ aspect-ratio:3/4.6; }
 .tile.square{ aspect-ratio:1/1; }
+/* uncropped, uncaptioned tiles ("On the Trade Floor", "Media Coverage")
+   — the box just hugs the image's own proportions instead of
+   force-cropping to a fixed ratio. Every override here is written at
+   the same two-class specificity as the rules it needs to beat
+   (.tile.wide, .tile.photo img, .tile.photo::before) so it wins on
+   source order instead of silently losing to them. */
+.tile.tf-tile{ aspect-ratio:auto; background:none; }
+.tile.tf-tile img{ position:static; width:100%; height:auto; object-fit:contain; }
+.tile.tf-tile::before{ content:none; }
 /* facet svg overlay reused as gem motif */
 .gem-mark{ color:var(--gold-500); width:34px; height:34px; }
 /* ============================================================
    FOOTER
    ============================================================ */
-.footer{ padding:5rem 0 2.5rem; background:var(--navy-900); border-top:1px solid var(--line-soft); scroll-snap-align:start; position:sticky; top:0; }
+.footer{
+  padding:5rem 0 2.5rem; background:var(--navy-900); border-top:1px solid var(--line-soft);
+  scroll-snap-align:start; position:sticky; top:0;
+  /* always paint above every .stack-section card, regardless of how
+     many are on the page — the JS also sets an incrementing z-index,
+     this is the guaranteed floor so the footer reliably rises over
+     whichever section it lands on, on mobile and desktop alike */
+  z-index:999;
+  border-radius:20px 20px 0 0;
+  box-shadow:0 -30px 60px -30px rgba(22,20,15,.35);
+}
 .footer-grid{ display:grid; grid-template-columns:1.4fr 1fr 1fr 1fr; gap:3rem; padding-bottom:3rem; }
 .footer h4{ font-size:.7rem; letter-spacing:.2em; text-transform:uppercase; color:var(--gold-400); margin-bottom:1.3rem; }
 .footer ul li{ margin-bottom:.7rem; }

@@ -17,6 +17,48 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('[data-file]').forEach(el => {
     el.href = supabaseFile(el.getAttribute('data-file'));
   });
+  /* ---- preload the destination page on link hover/focus/touch ----
+     as soon as a visitor shows intent to follow an internal link, fetch
+     that page's HTML plus its hero video/fallback image in the
+     background, so by the time they actually click, the next page's
+     hero is already loading (or fully cached) instead of starting cold */
+  const HERO_PRELOAD = {
+    'index.html': { video: 'hero/home.mp4' },
+    'about.html': { video: 'hero/about.mp4', img: 'assets/hero/about.png' },
+    'certifications.html': { video: 'hero/certification.mp4', img: 'assets/hero/cert.png' },
+    'craftsmanship.html': { video: 'hero/craftsmanship.mp4', img: 'assets/hero/craft.png' },
+    'contact.html': { video: 'hero/contact.mp4', img: 'assets/hero/contact.png' },
+    'investor-relations.html': { video: 'hero/invest.mp4', img: 'assets/hero/invest.png' },
+    'events.html': { video: 'hero/events.mp4', img: 'assets/hero/event.png' },
+    'workforce.html': { video: 'hero/wf.mp4', img: 'assets/hero/wf.png' },
+    'products.html': { video: 'hero/products.mp4', img: 'assets/hero/product.png' },
+    'manufacturing.html': { video: 'hero/manufacturing.mp4', img: 'assets/hero/manu.png' }
+  };
+  const preloadedPages = new Set();
+  const preloadPage = (href) => {
+    if (!href || preloadedPages.has(href)) return;
+    preloadedPages.add(href);
+    const link = document.createElement('link');
+    link.rel = 'prefetch';
+    link.href = href;
+    document.head.appendChild(link);
+    const hero = HERO_PRELOAD[href];
+    if (hero) {
+      if (hero.img) { const img = new Image(); img.src = hero.img; }
+      if (hero.video) {
+        const v = document.createElement('video');
+        v.preload = 'auto';
+        v.muted = true;
+        v.src = supabaseImage(hero.video);
+      }
+    }
+  };
+  document.querySelectorAll('a[href$=".html"]').forEach(a => {
+    const href = a.getAttribute('href');
+    a.addEventListener('mouseenter', () => preloadPage(href), { once: true });
+    a.addEventListener('focus', () => preloadPage(href), { once: true });
+    a.addEventListener('touchstart', () => preloadPage(href), { passive: true, once: true });
+  });
   /* ---- active nav link (data-key may hold several page names, space-separated) ---- */
   const page = document.body.getAttribute('data-page');
   document.querySelectorAll('.nav-links a[data-key], .mobile-panel a[data-key]').forEach(a => {
@@ -137,13 +179,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const nameEl = document.getElementById('founder-modal-name');
     const titleEl = document.getElementById('founder-modal-title');
     const bioEl = document.getElementById('founder-modal-bio');
-    const avatarEl = document.getElementById('founder-modal-avatar');
+    const avatarImgEl = document.getElementById('founder-modal-avatar-img');
     const openModal = (card) => {
       nameEl.textContent = card.dataset.name || '';
       titleEl.textContent = card.dataset.title || '';
       bioEl.textContent = card.dataset.bio || '';
-      const avatar = card.querySelector('.founder-avatar');
-      avatarEl.textContent = avatar ? avatar.textContent : '';
+      const cardImg = card.querySelector('.founder-avatar img');
+      avatarImgEl.src = cardImg ? cardImg.src : '';
+      avatarImgEl.alt = cardImg ? cardImg.alt : '';
       founderModal.classList.add('open');
       founderModal.setAttribute('aria-hidden', 'false');
       document.body.style.overflow = 'hidden';
@@ -580,13 +623,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const orbitShowcase = document.getElementById('orbit-showcase');
   if (orbitShowcase) {
     const products = [
-      { name: 'Diamond Ring', img: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=500&q=70', desc: 'A refined diamond ring crafted with precision and timeless detailing.' },
-      { name: 'Diamond Earrings', img: 'https://images.unsplash.com/photo-1573408301185-9146fe634ad0?auto=format&fit=crop&w=500&q=70', desc: 'Elegant earrings balanced for comfort and finished neatly from every angle.' },
-      { name: 'Diamond Pendant', img: 'https://images.unsplash.com/photo-1611085583191-a3b181a88401?auto=format&fit=crop&w=500&q=70', desc: 'A sophisticated pendant defined by refined craftsmanship and exceptional finish.' },
-      { name: 'Diamond Necklace', img: 'https://images.unsplash.com/photo-1611955167811-4711904bb9f8?auto=format&fit=crop&w=500&q=70', desc: 'An elegant necklace designed with refined proportions and exceptional finishing.' },
-      { name: 'Gold Bracelet', img: 'https://images.unsplash.com/photo-1608042314453-ae338d80c427?auto=format&fit=crop&w=500&q=70', desc: 'A dependable bracelet built for daily movement without compromising refinement.' },
-      { name: 'Diamond Brooch', img: 'https://images.unsplash.com/photo-1611652022419-a9419f74343d?auto=format&fit=crop&w=500&q=70', desc: 'A statement brooch, precisely pinned and finished with quiet confidence.' },
-      { name: "Men's Jewellery", img: 'https://images.unsplash.com/photo-1506630448388-4e683c67ddb0?auto=format&fit=crop&w=500&q=70', desc: 'Strong, comfortable jewellery, refined for everyday confidence.' }
+      { name: 'Diamond Ring', img: supabaseImage('Products/ring.png'), desc: 'A refined diamond ring crafted with precision and timeless detailing.' },
+      { name: 'Diamond Earrings', img: supabaseImage('Products/earring.png'), desc: 'Elegant earrings balanced for comfort and finished neatly from every angle.' },
+      { name: 'Diamond Pendant', img: supabaseImage('Products/pendant.jpg'), desc: 'A sophisticated pendant defined by refined craftsmanship and exceptional finish.' },
+      { name: 'Diamond Necklace', img: supabaseImage('Products/necklace.png'), desc: 'An elegant necklace designed with refined proportions and exceptional finishing.' },
+      { name: "Men's Jewellery", img: supabaseImage('Products/mens.png'), desc: 'Strong, comfortable jewellery, refined for everyday confidence.' },
+      { name: 'Diamond Brooch', img: supabaseImage('Products/brooches.jpg'), desc: 'A statement brooch, precisely pinned and finished with quiet confidence.' }
     ];
     const total = products.length;
     const centerImg = document.getElementById('orbit-center-img');
