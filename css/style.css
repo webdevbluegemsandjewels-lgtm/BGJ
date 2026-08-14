@@ -407,6 +407,34 @@ p{ margin:0; }
   position:relative; width:100%; max-width:340px; height:430px;
   touch-action:pan-y;
 }
+/* first-glimpse full-screen takeover: surrounding text disappears and
+   the carousel expands to fill the viewport so every card fans out
+   fully visible, before settling back into its normal in-page spot */
+body.cert-glimpse-active{ overflow:hidden; }
+body.cert-glimpse-active #cert-showcase{
+  position:fixed; inset:0; z-index:1200;
+  display:flex; align-items:center; justify-content:center;
+  grid-template-columns:none; gap:0; padding:0;
+  background:var(--navy-950);
+}
+body.cert-glimpse-active #cert-text,
+body.cert-glimpse-active .cert-stack-nav{
+  opacity:0; pointer-events:none; transition:opacity .25s;
+}
+/* taken out of flex flow entirely — otherwise the (still-present,
+   merely invisible) #cert-text sibling keeps claiming its share of
+   width and pushes the card stack off-center */
+body.cert-glimpse-active .cert-stack-wrap{
+  position:absolute; inset:0; width:100%; max-width:none;
+  display:flex; align-items:center; justify-content:center;
+}
+body.cert-glimpse-active .cert-stack{ max-width:none; width:100%; height:100%; }
+body.cert-glimpse-active .cert-stack-card{
+  inset:auto; top:50%; left:50%; width:230px; height:300px; margin:-150px 0 0 -115px;
+}
+@media(max-width:640px){
+  body.cert-glimpse-active .cert-stack-card{ width:160px; height:210px; margin:-105px 0 0 -80px; }
+}
 .cert-stack-card{
   position:absolute; inset:0; border-radius:16px;
   background:linear-gradient(155deg,var(--gold-600),var(--ink));

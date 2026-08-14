@@ -305,6 +305,59 @@ document.addEventListener('DOMContentLoaded', () => {
     certStack.addEventListener('mouseenter', stopAutoplay);
     certStack.addEventListener('mouseleave', startAutoplay);
 
+    /* first glimpse: the moment this section is reached (well after the
+       hero, never during it), the whole carousel takes over the full
+       screen, the surrounding text disappears, and every certificate
+       fans out full-width so the visitor sees the whole set at a
+       glance — then it collapses back into the normal in-page stack */
+    const glimpseSection = document.getElementById('cert-showcase');
+    const spreadLayout = (i) => {
+      const mid = (total - 1) / 2;
+      const offset = i - mid;
+      const spacing = Math.min(240, window.innerWidth / (total + 1));
+      return {
+        transform: `translateX(${offset * spacing}px) scale(.9) rotate(${offset * 3}deg)`,
+        opacity: 1, z: 20 - Math.abs(offset), pe: 'none'
+      };
+    };
+    const showGlimpse = () => {
+      stopAutoplay();
+      document.body.classList.add('cert-glimpse-active');
+      document.body.style.overflow = 'hidden';
+      cards.forEach((card, i) => {
+        const s = spreadLayout(i);
+        card.style.transform = s.transform;
+        card.style.opacity = s.opacity;
+        card.style.zIndex = s.z;
+        card.style.pointerEvents = s.pe;
+      });
+      setTimeout(() => {
+        document.body.classList.remove('cert-glimpse-active');
+        document.body.style.overflow = '';
+        render();
+        setTimeout(startAutoplay, 700);
+      }, 1800);
+    };
+    if (glimpseSection) {
+      const hero = document.querySelector('.hero');
+      /* multiple thresholds so the callback keeps re-firing as the user
+         keeps scrolling — a single threshold only fires once per
+         crossing, which would permanently miss the trigger if the hero
+         guard happened to reject that one moment */
+      const glimpseIo = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.intersectionRatio < 0.5) return;
+          if (hero) {
+            const heroRect = hero.getBoundingClientRect();
+            if (heroRect.bottom > window.innerHeight * 0.4) return;
+          }
+          glimpseIo.disconnect();
+          showGlimpse();
+        });
+      }, { threshold: [0, 0.1, 0.25, 0.5, 0.75, 1] });
+      glimpseIo.observe(glimpseSection);
+    }
+
     /* contained wheel input on desktop — nudges the stack, then cools down
        so normal page scrolling isn't trapped */
     let wheelAccum = 0;
