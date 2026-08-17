@@ -65,7 +65,15 @@ p{ margin:0; }
 ::-webkit-scrollbar-thumb{ background:var(--navy-500); border-radius:10px; }
 ::-webkit-scrollbar-thumb:hover{ background:var(--gold-500); }
 /* ---------- utility ---------- */
-.wrap{ max-width:1240px; margin:0 auto; padding:0 6vw; }
+/* padding is clamped so it stops growing past ~1067px viewport width —
+   plain 6vw would otherwise keep eating into the capped .wrap box as
+   screens get wider (4K/ultrawide), squeezing the content column down
+   to a sliver between two huge gutters */
+.wrap{ max-width:1240px; margin:0 auto; padding:0 clamp(1.5rem,6vw,4rem); }
+/* let the content column grow on large monitors/ultrawide instead of
+   staying frozen at 1240px inside ever-larger empty gutters */
+@media(min-width:1600px){ .wrap{ max-width:1400px; } }
+@media(min-width:2000px){ .wrap{ max-width:1600px; } }
 .eyebrow{
   font-family:var(--sans);
   font-size:.72rem;
@@ -169,13 +177,13 @@ p{ margin:0; }
 .nav{
   position:fixed; top:0; left:0; right:0; z-index:1000;
   display:flex; align-items:center; justify-content:space-between;
-  padding:1.6rem 6vw;
+  padding:1.6rem clamp(1.5rem,6vw,4rem);
   background:linear-gradient(180deg,rgba(22,20,15,.55),rgba(22,20,15,0));
   backdrop-filter:blur(2px);
   transition:padding .4s var(--ease), background .4s var(--ease), box-shadow .4s var(--ease);
 }
 .nav.scrolled{
-  padding:1rem 6vw;
+  padding:1rem clamp(1.5rem,6vw,4rem);
   background:rgba(243,238,228,.92);
   backdrop-filter:blur(16px);
   box-shadow:0 1px 0 var(--line-soft), 0 20px 40px -20px rgba(22,20,15,.12);
@@ -297,7 +305,7 @@ p{ margin:0; }
     linear-gradient(65deg,transparent 48%, rgba(216,190,143,.05) 49%, rgba(216,190,143,.05) 50%, transparent 51%);
   background-size:180px 180px, 260px 260px;
 }
-.hero-content{ padding:128px 6vw 0; max-width:980px; }
+.hero-content{ padding:128px clamp(1.5rem,6vw,4rem) 0; max-width:980px; }
 .hero .eyebrow{ justify-content:center; margin-bottom:1.6rem; color:var(--gold-300); text-shadow:0 2px 16px rgba(0,0,0,.5); }
 .hero h1{
   font-size:clamp(2.4rem,6vw,5rem); line-height:1.08; color:var(--white);
