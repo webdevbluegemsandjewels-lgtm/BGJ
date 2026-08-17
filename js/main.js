@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
      background, so by the time they actually click, the next page's
      hero is already loading (or fully cached) instead of starting cold */
   const HERO_PRELOAD = {
-    'index.html': { video: 'hero/home.mp4' },
+    'index.html': { img: supabaseImage('hero/Home/1.png') },
     'about.html': { video: 'hero/about.mp4', img: 'assets/hero/about.png' },
     'certifications.html': { video: 'hero/certification.mp4', img: 'assets/hero/cert.png' },
     'contact.html': { video: 'hero/contact.mp4', img: 'assets/hero/contact.png' },
@@ -940,7 +940,7 @@ document.addEventListener('DOMContentLoaded', () => {
    ============================================================ */
 const NAV_HTML = `
 <nav class="nav">
-  <a href="index.html" class="brand"><img src="assets/logo.jpg" alt="Blue Gems and Jewels" class="brand-logo"></a>
+  <a href="index.html" class="brand"><span class="brand-logo" role="img" aria-label="Blue Gems and Jewels"></span></a>
   <div class="nav-links">
     <a href="about.html" data-key="about">About</a>
     <a href="products.html" data-key="products">Products</a>
