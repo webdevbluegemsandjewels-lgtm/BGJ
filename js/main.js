@@ -694,23 +694,51 @@ document.addEventListener('DOMContentLoaded', () => {
     }, { passive: true });
     updateScrollHint();
   }
-  /* ---- product constellation (circular auto-rotating showcase) ---- */
-  const orbitShowcase = document.getElementById('orbit-showcase');
-  if (orbitShowcase) {
-    const products = [
+  /* ---- product constellation (circular auto-rotating showcase) ----
+     supports any number of orbit-showcase instances on a page, each
+     driven by its own product list (keyed off data-orbit) and each
+     ring built to fit however many items that list has. */
+  const ORBIT_PRODUCTS = {
+    women: [
       { name: 'Diamond Ring', img: supabaseImage('Products/ring.png'), desc: 'A refined diamond ring crafted with precision and timeless detailing.' },
       { name: 'Diamond Earrings', img: supabaseImage('Products/earring.png'), desc: 'Elegant earrings balanced for comfort and finished neatly from every angle.' },
-      { name: 'Diamond Pendant', img: supabaseImage('Products/pendant.jpg'), desc: 'A sophisticated pendant defined by refined craftsmanship and exceptional finish.' },
-      { name: 'Diamond Necklace', img: supabaseImage('Products/necklace.png'), desc: 'An elegant necklace designed with refined proportions and exceptional finishing.' },
-      { name: "Men's Jewellery", img: supabaseImage('Products/mens.png'), desc: 'Strong, comfortable jewellery, refined for everyday confidence.' },
-      { name: 'Diamond Brooch', img: supabaseImage('Products/brooches.jpg'), desc: 'A statement brooch, precisely pinned and finished with quiet confidence.' }
-    ];
+      { name: 'Fine Pendant', img: supabaseImage('Products/pendant.jpg'), desc: 'A sophisticated pendant defined by refined craftsmanship and exceptional finish.' },
+      { name: 'Fine Necklace', img: supabaseImage('Products/necklace.png'), desc: 'An elegant necklace designed with refined proportions and exceptional finishing.' },
+      { name: 'Brooch Detail', img: supabaseImage('Products/brooches.jpg'), desc: 'A statement brooch, precisely pinned and finished with quiet confidence.' },
+      { name: 'Gold Cuff', img: supabaseImage('Products/ring.png'), desc: 'A rigid gold cuff, comfortable to wear and finished with a confident line.' }
+    ],
+    men: [
+      { name: 'Diamond Ring', img: supabaseImage('Products/ring.png'), desc: 'A refined diamond ring crafted with precision and timeless detailing.' },
+      { name: 'Fine Necklace', img: supabaseImage('Products/necklace.png'), desc: 'An elegant necklace designed with refined proportions and exceptional finishing.' },
+      { name: "Men's Gold Bracelet", img: supabaseImage('Products/mens.png'), desc: 'Strong, comfortable jewellery, refined for everyday confidence.' },
+      { name: 'Diamond Earrings', img: supabaseImage('Products/earring.png'), desc: 'Elegant earrings balanced for comfort and finished neatly from every angle.' },
+      { name: 'Brooch Detail', img: supabaseImage('Products/brooches.jpg'), desc: 'A statement brooch, precisely pinned and finished with quiet confidence.' }
+    ]
+  };
+  document.querySelectorAll('.orbit-showcase[data-orbit]').forEach(orbitShowcase => {
+    const products = ORBIT_PRODUCTS[orbitShowcase.dataset.orbit];
+    if (!products || !products.length) return;
     const total = products.length;
-    const centerImg = document.getElementById('orbit-center-img');
-    const nameEl = document.getElementById('orbit-name');
-    const descEl = document.getElementById('orbit-desc');
-    const textEl = document.getElementById('orbit-text');
-    const orbitItems = Array.from(orbitShowcase.querySelectorAll('.orbit-item'));
+    const ring = orbitShowcase.querySelector('.orbit-ring');
+    const centerImg = orbitShowcase.querySelector('.orbit-center-img');
+    const nameEl = orbitShowcase.querySelector('.orbit-name');
+    const descEl = orbitShowcase.querySelector('.orbit-desc');
+    const textEl = orbitShowcase.querySelector('.orbit-text');
+    if (!ring || !centerImg || !nameEl || !descEl || !textEl) return;
+
+    /* build one ring slot per non-center product, evenly spaced around the circle */
+    const ringCount = total - 1;
+    const angleStep = 360 / ringCount;
+    ring.innerHTML = '';
+    for (let i = 0; i < ringCount; i++) {
+      const angle = (i - (ringCount - 1) / 2) * angleStep;
+      const item = document.createElement('div');
+      item.className = 'orbit-item';
+      item.style.transform = `rotate(${angle}deg) translate(var(--orbit-r)) rotate(${-angle}deg)`;
+      item.innerHTML = '<div class="orbit-item-face"><img alt=""></div>';
+      ring.appendChild(item);
+    }
+    const orbitItems = Array.from(ring.querySelectorAll('.orbit-item'));
     const faceImgs = orbitItems.map(item => item.querySelector('.orbit-item-face img'));
     faceImgs.forEach(img => { img.onerror = () => { img.style.opacity = '0'; }; });
     centerImg.onerror = () => { centerImg.style.opacity = '0'; };
@@ -770,7 +798,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     render(false);
     startAutoplay();
-  }
+  });
   /* ---- testimonial carousel (one centered, slides left/in from right, autoplays) ---- */
   const testimonialCarousel = document.getElementById('testimonial-carousel');
   if (testimonialCarousel) {
@@ -910,7 +938,7 @@ document.addEventListener('DOMContentLoaded', () => {
    ============================================================ */
 const NAV_HTML = `
 <nav class="nav">
-  <a href="index.html" class="brand"><img src="assets/logo.png" alt="Blue Gems and Jewels" class="brand-logo"></a>
+  <a href="index.html" class="brand"><img src="assets/logo.jpg" alt="Blue Gems and Jewels" class="brand-logo"></a>
   <div class="nav-links">
     <a href="about.html" data-key="about">About</a>
     <a href="products.html" data-key="products">Products</a>
