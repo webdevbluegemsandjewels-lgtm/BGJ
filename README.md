@@ -22,7 +22,7 @@ contact.html            Locations, factory visit, enquiry form
 
 css/style.css          Shared design system (colors, type, components, animation)
 js/main.js              Shared nav/footer injection, scroll-reveal, counters, form demo
-assets/logo.jpg         Brand logo used in the header
+assets/logo.png         Brand logo used in the header
 ```
 
 Every page pulls the same `css/style.css` and `js/main.js`, and `main.js` injects
