@@ -359,6 +359,10 @@ p{ margin:0; }
 .btn-gold:hover{ background:var(--gold-400); transform:translateY(-2px); box-shadow:0 14px 30px -10px rgba(142,109,63,.4); }
 .btn-ghost{ border:1px solid var(--line-soft); color:var(--ivory); }
 .btn-ghost:hover{ border-color:var(--gold-500); color:var(--gold-500); transform:translateY(-2px); }
+.btn-sm{ padding:.55rem 1.2rem; font-size:.64rem; letter-spacing:.1em; }
+/* one card per grid cell: photo tile on top, a small CTA below it */
+.tf-card{ display:flex; flex-direction:column; align-items:center; gap:.9rem; }
+.tf-card .tile{ width:100%; }
 /* ============================================================
    CARDS
    ============================================================ */
@@ -963,6 +967,10 @@ a.card:hover .card-arrow{ background:var(--gold-500); border-color:var(--gold-50
 }
 .tile.photo .tile-label{ color:var(--white); }
 .tile.photo .tile-label small{ color:var(--gold-300); }
+/* logo-style artwork (e.g. IIJS) shouldn't be force-cropped like a
+   photo — show it whole, letterboxed on white, inside the same frame */
+.tile.photo.tile-contain{ background:var(--white); }
+.tile.photo.tile-contain img{ object-fit:contain; padding:1.4rem; }
 .tile.tall{ aspect-ratio:3/4.6; }
 .tile.square{ aspect-ratio:1/1; }
 /* uncropped, uncaptioned tiles ("On the Trade Floor", "Media Coverage")
