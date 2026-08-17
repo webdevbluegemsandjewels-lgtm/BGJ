@@ -26,13 +26,10 @@ document.addEventListener('DOMContentLoaded', () => {
     'index.html': { video: 'hero/home.mp4' },
     'about.html': { video: 'hero/about.mp4', img: 'assets/hero/about.png' },
     'certifications.html': { video: 'hero/certification.mp4', img: 'assets/hero/cert.png' },
-    'craftsmanship.html': { video: 'hero/craftsmanship.mp4', img: 'assets/hero/craft.png' },
     'contact.html': { video: 'hero/contact.mp4', img: 'assets/hero/contact.png' },
     'investor-relations.html': { video: 'hero/invest.mp4', img: 'assets/hero/invest.png' },
     'events.html': { video: 'hero/events.mp4', img: 'assets/hero/event.png' },
-    'workforce.html': { video: 'hero/wf.mp4', img: 'assets/hero/wf.png' },
-    'products.html': { video: 'hero/products.mp4', img: 'assets/hero/product.png' },
-    'manufacturing.html': { video: 'hero/manufacturing.mp4', img: 'assets/hero/manu.png' }
+    'products.html': { video: 'hero/products.mp4', img: 'assets/hero/product.png' }
   };
   const preloadedPages = new Set();
   const preloadPage = (href) => {
@@ -916,14 +913,6 @@ const NAV_HTML = `
   <a href="index.html" class="brand"><img src="assets/logo.png" alt="Blue Gems and Jewels" class="brand-logo"></a>
   <div class="nav-links">
     <a href="about.html" data-key="about">About</a>
-    <div class="nav-drop">
-      <a href="manufacturing.html" data-key="manufacturing craftsmanship workforce">Manufacturing<span class="caret">&#9662;</span></a>
-      <div class="nav-drop-menu">
-        <a href="manufacturing.html">Manufacturing Process</a>
-        <a href="craftsmanship.html">Design &amp; Craftsmanship</a>
-        <a href="workforce.html">Workforce &amp; Machinery</a>
-      </div>
-    </div>
     <a href="products.html" data-key="products">Products</a>
     <div class="nav-drop">
       <a href="certifications.html" data-key="certifications events investor-relations">Company<span class="caret">&#9662;</span></a>
@@ -940,12 +929,6 @@ const NAV_HTML = `
 <div class="mobile-panel">
   <a href="index.html">Home</a>
   <a href="about.html">About</a>
-  <div class="mp-group">
-    <span class="mp-heading">Manufacturing</span>
-    <a href="manufacturing.html">Process</a>
-    <a href="craftsmanship.html">Craftsmanship</a>
-    <a href="workforce.html">Workforce &amp; Machinery</a>
-  </div>
   <a href="products.html">Products</a>
   <div class="mp-group">
     <span class="mp-heading">Company</span>

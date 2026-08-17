@@ -13,18 +13,15 @@ const FOOTER_HTML = `
         <h4>Explore</h4>
         <ul>
           <li><a href="about.html">About Us</a></li>
-          <li><a href="manufacturing.html">Manufacturing</a></li>
-          <li><a href="craftsmanship.html">Craftsmanship</a></li>
-          <li><a href="workforce.html">Workforce &amp; Machinery</a></li>
+          <li><a href="products.html">Product Categories</a></li>
+          <li><a href="certifications.html">Certifications</a></li>
         </ul>
       </div>
       <div>
         <h4>Company</h4>
         <ul>
-          <li><a href="certifications.html">Certifications</a></li>
           <li><a href="events.html">Events &amp; Exhibitions</a></li>
           <li><a href="investor-relations.html">Investor Relations</a></li>
-          <li><a href="products.html">Product Categories</a></li>
           <li><a href="contact.html">Visit the Factory</a></li>
         </ul>
       </div>

@@ -15,9 +15,6 @@ Just open `index.html` in a browser. Every page links relatively (`css/`, `js/`,
 ```
 index.html            Home
 about.html             Our story, timeline, founders, core values
-manufacturing.html     The 9-stage manufacturing process
-craftsmanship.html     Design philosophy, diamond setting, gold expertise
-workforce.html         Karigars, production/quality teams, machinery
 certifications.html    BIS Hallmark, GJEPC, Bharat Diamond Bourse
 events.html             IIJS, Couture, GJS, JAS and other trade platforms
 products.html          Rings, earrings, pendants, necklaces, bracelets, men's jewellery
