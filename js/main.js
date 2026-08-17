@@ -705,14 +705,16 @@ document.addEventListener('DOMContentLoaded', () => {
       { name: 'Fine Pendant', img: supabaseImage('Products/pendant.jpg'), desc: 'A sophisticated pendant defined by refined craftsmanship and exceptional finish.' },
       { name: 'Fine Necklace', img: supabaseImage('Products/necklace.png'), desc: 'An elegant necklace designed with refined proportions and exceptional finishing.' },
       { name: 'Brooch Detail', img: supabaseImage('Products/brooches.jpg'), desc: 'A statement brooch, precisely pinned and finished with quiet confidence.' },
-      { name: 'Gold Cuff', img: supabaseImage('Products/ring.png'), desc: 'A rigid gold cuff, comfortable to wear and finished with a confident line.' }
+      { name: 'Gold Cuff', img: supabaseImage('Products/cuffs.png'), desc: 'A rigid gold cuff, comfortable to wear and finished with a confident line.' },
+      { name: 'Diamond Bracelet', img: supabaseImage('Products/bracelet.png'), desc: 'A delicate bracelet, set and finished for everyday elegance.' }
     ],
     men: [
-      { name: 'Diamond Ring', img: supabaseImage('Products/ring.png'), desc: 'A refined diamond ring crafted with precision and timeless detailing.' },
-      { name: 'Fine Necklace', img: supabaseImage('Products/necklace.png'), desc: 'An elegant necklace designed with refined proportions and exceptional finishing.' },
-      { name: "Men's Gold Bracelet", img: supabaseImage('Products/mens.png'), desc: 'Strong, comfortable jewellery, refined for everyday confidence.' },
-      { name: 'Diamond Earrings', img: supabaseImage('Products/earring.png'), desc: 'Elegant earrings balanced for comfort and finished neatly from every angle.' },
-      { name: 'Brooch Detail', img: supabaseImage('Products/brooches.jpg'), desc: 'A statement brooch, precisely pinned and finished with quiet confidence.' }
+      { name: 'Ring', img: supabaseImage('Products/mensring.png'), desc: 'A refined diamond ring crafted with precision and timeless detailing.' },
+      { name: 'Fine Necklace', img: supabaseImage('Products/mensneck.png'), desc: 'An elegant necklace designed with refined proportions and exceptional finishing.' },
+      { name: "Men's Gold Bracelet", img: supabaseImage('Products/mensbracs.png'), desc: 'Strong, comfortable jewellery, refined for everyday confidence.' },
+      { name: 'Diamond Earrings', img: supabaseImage('Products/mensear.jpeg'), desc: 'Elegant earrings balanced for comfort and finished neatly from every angle.' },
+      { name: 'Brooch Detail', img: supabaseImage('Products/mensbroo.png'), desc: 'A statement brooch, precisely pinned and finished with quiet confidence.' },
+      { name: 'Gold Cuff', img: supabaseImage('Products/menscuffs.png'), desc: 'A rigid gold cuff, comfortable to wear and finished with a confident line.' }
     ]
   };
   document.querySelectorAll('.orbit-showcase[data-orbit]').forEach(orbitShowcase => {
