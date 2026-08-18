@@ -13,6 +13,7 @@ const FOOTER_HTML = `
         <h4>Explore</h4>
         <ul>
           <li><a href="about.html">About Us</a></li>
+          <li><a href="innovation.html">Innovation</a></li>
           <li><a href="products.html">Product Categories</a></li>
           <li><a href="certifications.html">Certifications</a></li>
         </ul>

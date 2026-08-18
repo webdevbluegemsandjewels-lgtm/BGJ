@@ -25,6 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const HERO_PRELOAD = {
     'index.html': { img: supabaseImage('hero/Home/1.png') },
     'about.html': { video: 'hero/about.mp4', img: 'assets/hero/about.png' },
+    'innovation.html': { img: supabaseImage('Innovation/hero.jpg') },
     'certifications.html': { video: 'hero/certification.mp4', img: 'assets/hero/cert.png' },
     'contact.html': { video: 'hero/contact.mp4', img: 'assets/hero/contact.png' },
     'investor-relations.html': { video: 'hero/invest.mp4', img: 'assets/hero/invest.png' },
@@ -394,7 +395,7 @@ document.addEventListener('DOMContentLoaded', () => {
         exhibition: 'IIJS — India International Jewellery Show',
         location: 'India',
         year: '2026',
-        desc: "Blue Gems and Jewels took part in IIJS 2026, one of India's largest B2B jewellery exhibitions, presenting its collections to manufacturers, retailers, and exporters nationwide. The exhibition marked an important platform for showcasing our manufacturing capability.",
+        desc: "Blue Gems and Jewels took part in IIJS 2026, one of India's largest B2B jewellery exhibitions, presenting its collections to manufacturers, retailers. The exhibition marked an important platform for showcasing our manufacturing capability.",
         image: { src: 'Past Events/IIJS_Aug_2026 image 1.jpeg', position: 'top' }
       },
       {
@@ -466,7 +467,7 @@ document.addEventListener('DOMContentLoaded', () => {
         exhibition: 'India International Jewellery Show',
         location: 'India',
         year: '2022',
-        desc: "Blue Gems and Jewels took part in IIJS 2022, one of India's largest B2B jewellery exhibitions, presenting its collections to manufacturers, retailers, and exporters nationwide. The exhibition marked an important platform for showcasing our manufacturing capability.",
+        desc: "Blue Gems and Jewels took part in IIJS 2022, one of India's largest B2B jewellery exhibitions, presenting its collections to manufacturers, retailers. The exhibition marked an important platform for showcasing our manufacturing capability.",
         image: 'Past Events/Iijs 2022 IMAGE 1.jpg'
       }
     ];
@@ -712,9 +713,9 @@ document.addEventListener('DOMContentLoaded', () => {
       { name: 'Ring', img: supabaseImage('Products/mensring.png'), desc: 'A refined diamond ring crafted with precision and timeless detailing.' },
       { name: 'Fine Necklace', img: supabaseImage('Products/mensneck.png'), desc: 'An elegant necklace designed with refined proportions and exceptional finishing.' },
       { name: "Men's Gold Bracelet", img: supabaseImage('Products/mensbracs.png'), desc: 'Strong, comfortable jewellery, refined for everyday confidence.' },
-      { name: 'Diamond Earrings', img: supabaseImage('Products/mensear.jpeg'), desc: 'Elegant earrings balanced for comfort and finished neatly from every angle.' },
+      { name: 'Diamond Earrings', img: supabaseImage('Products/mensear.png'), desc: 'Elegant earrings balanced for comfort and finished neatly from every angle.' },
       { name: 'Brooch Detail', img: supabaseImage('Products/mensbroo.png'), desc: 'A statement brooch, precisely pinned and finished with quiet confidence.' },
-      { name: 'Gold Cuff', img: supabaseImage('Products/menscuffs.png'), desc: 'A rigid gold cuff, comfortable to wear and finished with a confident line.' }
+      { name: 'Gold Cuff', img: supabaseImage('Products/menscuffs.jpeg'), desc: 'A rigid gold cuff, comfortable to wear and finished with a confident line.' }
     ]
   };
   document.querySelectorAll('.orbit-showcase[data-orbit]').forEach(orbitShowcase => {
@@ -943,6 +944,7 @@ const NAV_HTML = `
   <a href="index.html" class="brand"><span class="brand-logo" role="img" aria-label="Blue Gems and Jewels"></span></a>
   <div class="nav-links">
     <a href="about.html" data-key="about">About</a>
+    <a href="innovation.html" data-key="innovation">Innovation</a>
     <a href="products.html" data-key="products">Products</a>
     <div class="nav-drop">
       <a href="certifications.html" data-key="certifications events investor-relations">Company<span class="caret">&#9662;</span></a>
@@ -959,6 +961,7 @@ const NAV_HTML = `
 <div class="mobile-panel">
   <a href="index.html">Home</a>
   <a href="about.html">About</a>
+  <a href="innovation.html">Innovation</a>
   <a href="products.html">Products</a>
   <div class="mp-group">
     <span class="mp-heading">Company</span>
