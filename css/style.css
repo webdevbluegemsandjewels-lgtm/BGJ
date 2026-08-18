@@ -1163,7 +1163,7 @@ a.card:hover .card-arrow{ background:var(--gold-500); border-color:var(--gold-50
   position:relative; z-index:2; min-height:100vh;
   display:flex; align-items:center; justify-content:center;
   padding:6rem 0; margin-top:-4.5rem;
-  background:url('https://czgytzchdqqigmrfwekp.supabase.co/storage/v1/object/public/Images/assets/investbg.png') center/cover no-repeat;
+  background:url('https://images.unsplash.com/photo-1775163024488-e88e4a71179f?auto=format&fit=crop&w=1800&q=80') center/cover no-repeat;
 }
 .ir-section .wrap{ width:100%; }
 .ir-panel{

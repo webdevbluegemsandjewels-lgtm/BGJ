@@ -25,11 +25,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const HERO_PRELOAD = {
     'index.html': { img: supabaseImage('hero/Home/1.png') },
     'about.html': { video: 'hero/about.mp4', img: 'assets/hero/about.png' },
-    'innovation.html': { img: supabaseImage('Innovation/hero.jpg') },
-    'certifications.html': { video: 'hero/certification.mp4', img: 'assets/hero/cert.png' },
-    'contact.html': { video: 'hero/contact.mp4', img: 'assets/hero/contact.png' },
-    'investor-relations.html': { video: 'hero/invest.mp4', img: 'assets/hero/invest.png' },
-    'events.html': { video: 'hero/events.mp4', img: 'assets/hero/event.png' },
+    'innovation.html': { img: 'https://images.unsplash.com/photo-1677768061375-cd600727e274?auto=format&fit=crop&w=1800&q=80' },
+    'certifications.html': { img: 'https://images.unsplash.com/photo-1654422958642-6b4ca03a8796?auto=format&fit=crop&w=1800&q=80' },
+    'contact.html': { img: 'https://images.unsplash.com/photo-1638262052640-82e94d64664a?auto=format&fit=crop&w=1800&q=80' },
+    'investor-relations.html': { img: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1800&q=80' },
+    'events.html': { img: 'https://images.unsplash.com/photo-1685489807290-199befdb1f13?auto=format&fit=crop&w=1800&q=80' },
     'products.html': { video: 'hero/products.mp4', img: 'assets/hero/product.png' }
   };
   const preloadedPages = new Set();
