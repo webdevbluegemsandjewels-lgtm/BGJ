@@ -971,6 +971,11 @@ a.card:hover .card-arrow{ background:var(--gold-500); border-color:var(--gold-50
   transition:transform 1.4s var(--ease-soft);
 }
 .tile.photo:hover img{ transform:scale(1.1); }
+.tile.photo video{
+  position:absolute; inset:0; z-index:0; width:100%; height:100%; object-fit:cover;
+  transition:transform 1.4s var(--ease-soft);
+}
+.tile.photo:hover video{ transform:scale(1.1); }
 .tile.photo::before{
   content:''; position:absolute; inset:0; z-index:1;
   background:linear-gradient(180deg, rgba(22,20,15,0) 35%, rgba(22,20,15,.8) 100%);
@@ -980,7 +985,8 @@ a.card:hover .card-arrow{ background:var(--gold-500); border-color:var(--gold-50
 /* logo-style artwork (e.g. IIJS) shouldn't be force-cropped like a
    photo — show it whole, letterboxed on white, inside the same frame */
 .tile.photo.tile-contain{ background:var(--white); }
-.tile.photo.tile-contain img{ object-fit:contain; padding:1.4rem; }
+.tile.photo.tile-contain img,
+.tile.photo.tile-contain video{ object-fit:contain; padding:1.4rem; }
 .tile.tall{ aspect-ratio:3/4.6; }
 .tile.square{ aspect-ratio:1/1; }
 /* uncropped, uncaptioned tiles ("On the Trade Floor", "Media Coverage")
@@ -1122,20 +1128,7 @@ a.card:hover .card-arrow{ background:var(--gold-500); border-color:var(--gold-50
 /* map placeholder */
 .map-block{
   height:340px; border:1px solid var(--line-soft); border-radius:4px; position:relative; overflow:hidden;
-  background:
-    linear-gradient(rgba(142,109,63,.05) 1px, transparent 1px) 0 0/40px 40px,
-    linear-gradient(90deg, rgba(142,109,63,.05) 1px, transparent 1px) 0 0/40px 40px,
-    var(--navy-900);
 }
-.map-pin{
-  position:absolute; top:46%; left:52%; width:14px; height:14px; border-radius:50%;
-  background:var(--gold-500); box-shadow:0 0 0 6px rgba(142,109,63,.16);
-}
-.map-pin::after{
-  content:''; position:absolute; inset:-14px; border-radius:50%; border:1px solid var(--gold-500);
-  animation:ping 2.4s ease-out infinite;
-}
-@keyframes ping{ 0%{ transform:scale(.4); opacity:1;} 100%{ transform:scale(2.2); opacity:0;} }
 /* ============================================================
    INVESTOR RELATIONS — full-bleed image + glass content panel
    ============================================================ */
