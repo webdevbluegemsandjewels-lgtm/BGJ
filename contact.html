@@ -44,24 +44,22 @@
       <h2 style="font-size:clamp(1.8rem,3.4vw,2.4rem); margin-top:.5rem; margin-bottom:2.2rem;">Send us your requirement.</h2>
       <form id="inquiry-form">
         <div class="grid grid-2" style="gap:0 2rem;">
-          <div class="field"><label>Full Name</label><input type="text" required placeholder="Your name"></div>
-          <div class="field"><label>Company / Retail Business</label><input type="text" placeholder="Business name"></div>
+          <div class="field"><label>Full Name</label><input type="text" name="full_name" required minlength="2" maxlength="80" placeholder="Your name" title="Please enter your full name (at least 2 characters)."></div>
+          <div class="field"><label>Company / Retail Business</label><input type="text" name="company" maxlength="100" placeholder="Business name"></div>
         </div>
         <div class="grid grid-2" style="gap:0 2rem;">
-          <div class="field"><label>Email</label><input type="email" required placeholder="you@business.com"></div>
-          <div class="field"><label>Phone</label><input type="tel" placeholder="+91"></div>
+          <div class="field"><label>Email</label><input type="email" name="email" required maxlength="120" placeholder="you@business.com" title="Please enter a valid email address."></div>
+          <div class="field"><label>Phone</label><input type="tel" name="phone" pattern="[0-9+()\-\s]{7,15}" inputmode="tel" placeholder="+91" title="Please enter a valid phone number (7–15 digits, may include +, spaces, ( ) or -)."></div>
         </div>
         <div class="field">
           <label>I'm Interested In</label>
-          <select>
+          <select name="interest" required>
             <option>General Enquiry</option>
-            <option>Factory Visit</option>
             <option>Custom Manufacturing</option>
-            <option>Diamond-Studded Collection</option>
             <option>Bulk / Repeat Order Discussion</option>
           </select>
         </div>
-        <div class="field"><label>Message</label><textarea placeholder="Tell us about your requirement..."></textarea></div>
+        <div class="field"><label>Message</label><textarea name="message" required minlength="10" maxlength="1000" placeholder="Tell us about your requirement..." title="Please tell us a bit about your requirement (at least 10 characters)."></textarea></div>
         <button type="submit" class="btn btn-gold" style="border:none; cursor:pointer;">Send Enquiry</button>
       </form>
     </div>

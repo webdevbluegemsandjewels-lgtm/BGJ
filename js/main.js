@@ -922,17 +922,61 @@ document.addEventListener('DOMContentLoaded', () => {
     }, { threshold: 0.4 });
     counterIo.observe(el);
   });
-  /* ---- contact form (no backend — demo only) ---- */
+  /* ---- contact form ----
+     emails the enquiry via Web3Forms and logs it to the Supabase
+     "enquiries" table. Both need a real key filled in below — see
+     README.md for the one-time setup steps. */
+  const WEB3FORMS_ACCESS_KEY = '8d98f81f-221a-4b04-99f0-33956b46d798';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN6Z3l0emNoZHFxaWdtcmZ3ZWtwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUzMTg2NDQsImV4cCI6MjEwMDg5NDY0NH0.K3rAYf2ZbaSxCs-ep5lLbLQP1csYCgWatHmnHZopF6s';
   const form = document.getElementById('inquiry-form');
   if (form) {
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
       const btn = form.querySelector('button[type="submit"]');
       const original = btn.textContent;
-      btn.textContent = 'Message Sent ✓';
-      btn.style.background = 'var(--gold-400)';
-      form.reset();
-      setTimeout(() => { btn.textContent = original; }, 3200);
+      const data = new FormData(form);
+      const payload = {
+        full_name: data.get('full_name') || '',
+        company: data.get('company') || '',
+        email: data.get('email') || '',
+        phone: data.get('phone') || '',
+        interest: data.get('interest') || '',
+        message: data.get('message') || ''
+      };
+      btn.disabled = true;
+      btn.textContent = 'Sending…';
+      try {
+        await Promise.all([
+          fetch('https://api.web3forms.com/submit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+            body: JSON.stringify({
+              access_key: WEB3FORMS_ACCESS_KEY,
+              subject: `New enquiry from ${payload.full_name || 'website visitor'}`,
+              ...payload
+            })
+          }).then(r => { if (!r.ok) throw new Error('email send failed'); }),
+          fetch(`${SUPABASE_URL}/rest/v1/enquiries`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              apikey: SUPABASE_ANON_KEY,
+              Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+              Prefer: 'return=minimal'
+            },
+            body: JSON.stringify(payload)
+          }).then(r => { if (!r.ok) throw new Error('log to database failed'); })
+        ]);
+        btn.textContent = 'Message Sent ✓';
+        btn.style.background = 'var(--gold-400)';
+        form.reset();
+      } catch (err) {
+        btn.textContent = 'Something went wrong — please try again';
+        btn.style.background = '';
+      } finally {
+        btn.disabled = false;
+        setTimeout(() => { btn.textContent = original; btn.style.background = ''; }, 3600);
+      }
     });
   }
 });
