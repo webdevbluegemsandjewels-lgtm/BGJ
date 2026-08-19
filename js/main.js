@@ -954,7 +954,7 @@ const NAV_HTML = `
         <a href="investor-relations.html">Investor Relations</a>
       </div>
     </div>
-    <a href="contact.html" class="nav-cta" data-key="contact">Visit Factory</a>
+    <a href="contact.html" class="nav-cta" data-key="contact">Contact Us</a>
   </div>
   <div class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></div>
 </nav>

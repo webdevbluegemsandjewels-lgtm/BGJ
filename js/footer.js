@@ -37,7 +37,7 @@ const FOOTER_HTML = `
         <ul>
           <li><a href="events.html">Events &amp; Exhibitions</a></li>
           <li><a href="investor-relations.html">Investor Relations</a></li>
-          <li><a href="contact.html">Visit the Factory</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
         </ul>
       </div>
       <div>
