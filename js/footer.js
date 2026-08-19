@@ -43,8 +43,8 @@ const FOOTER_HTML = `
       <div>
         <h4>Trade Office</h4>
         <ul>
-          <li class="muted">Bharat Diamond Bourse,<br>BKC, Mumbai</li>
-          <li class="muted" style="margin-top:1rem;">Giriraj Industrial Estate,<br>Mahakali Caves Rd, opposite Ahura Centre,<br>Gundavali, Andheri East, Mumbai 400093</li>
+          <li class="muted">B/W 8030 Bharat Diamond Bourse,<br>opp NABARD Bank Head Office, BKC, Mumbai</li>
+          <li class="muted" style="margin-top:1rem;">A42, Giriraj Industrial Estate,<br>Mahakali Caves Rd, opposite Ahura Centre,<br>Gundavali, Andheri East, Mumbai 400093</li>
         </ul>
       </div>
     </div>
