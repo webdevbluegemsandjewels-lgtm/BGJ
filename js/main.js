@@ -5,13 +5,23 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ---- inject shared nav ---- */
   const navMount = document.getElementById('site-nav');
   if (navMount) navMount.innerHTML = NAV_HTML;
-  /* ---- load images/videos from Supabase Storage ---- */
+  /* ---- load images/videos/icons from Supabase Storage ----
+     the bucket URL lives only in supabase-config.js — every other file
+     just points at a path and lets this loader resolve the real URL,
+     instead of the full storage URL being pasted as a literal string
+     all over the HTML/CSS. */
   document.querySelectorAll('[data-img]').forEach(el => {
-    el.src = supabaseImage(el.getAttribute('data-img'));
+    const url = supabaseImage(el.getAttribute('data-img'));
+    if (el.tagName === 'LINK') { el.href = url; return; }
+    el.src = url;
     /* hero videos: keep the local fallback image visible until the video is actually playing */
     if (el.tagName === 'VIDEO' && el.closest('.hero-photo, .ir-hero-bg')) {
       el.addEventListener('playing', () => el.classList.add('is-ready'));
     }
+  });
+  /* ---- load CSS background-images from Supabase Storage ---- */
+  document.querySelectorAll('[data-bg-img]').forEach(el => {
+    el.style.backgroundImage = `url('${supabaseImage(el.getAttribute('data-bg-img'))}')`;
   });
   /* ---- load document links from Supabase Storage ---- */
   document.querySelectorAll('[data-file]').forEach(el => {
@@ -985,7 +995,7 @@ document.addEventListener('DOMContentLoaded', () => {
    ============================================================ */
 const NAV_HTML = `
 <nav class="nav">
-  <a href="index.html" class="brand"><span class="brand-logo" role="img" aria-label="Blue Gems and Jewels"></span></a>
+  <a href="index.html" class="brand"><span class="brand-logo" data-bg-img="assets/logo.png" role="img" aria-label="Blue Gems and Jewels"></span></a>
   <div class="nav-links">
     <a href="about.html" data-key="about">About</a>
     <a href="innovation.html" data-key="innovation">Innovation</a>
