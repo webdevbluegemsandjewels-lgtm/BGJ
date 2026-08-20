@@ -21,6 +21,9 @@ const FOOTER_HTML = `
           <a href="https://in.linkedin.com/company/blue-gems-and-jewels-limited." aria-label="LinkedIn">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M7.5 10v6.5M7.5 7.5v.01M11.5 16.5V10M11.5 12.5c0-1.5 1-2.5 2.5-2.5s2.5 1 2.5 2.5v4" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </a>
+          <a href="https://in.pinterest.com/bluegemsnjewels/" target="_blank" rel="noopener noreferrer" aria-label="Pinterest">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M9.5 18c1-3.5 1.5-6 2-8.2m0 0c.4-1.8 3-2 3.8-.6 1 1.7.2 5.3-1.8 5.8-1 .3-1.8-.3-2-1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
         </div>
       </div>
       <div>
