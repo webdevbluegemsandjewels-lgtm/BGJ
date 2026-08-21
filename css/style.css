@@ -584,11 +584,10 @@ body.cert-glimpse-active .cert-stack-card{
 /* ============================================================
    PAST EVENTS — vertical poster-stack showcase
    ============================================================ */
-.pe-section.stack-section{
+.pe-section{
   background:var(--ink);
-  box-shadow:0 -30px 60px -30px rgba(22,20,15,.4);
 }
-.pe-wrap{ padding:0 0 3rem; margin-top:-16px; }
+.pe-wrap{ padding:3rem 0; }
 .pe-head{ margin-bottom:2.2rem; max-width:640px; }
 .pe-eyebrow{ color:var(--gold-300); }
 .pe-stack-wrap{ position:relative; }

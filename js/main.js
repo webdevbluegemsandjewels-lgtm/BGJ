@@ -125,16 +125,47 @@ document.addEventListener('DOMContentLoaded', () => {
     const revealSections = document.querySelectorAll('.stack-section');
     const measureReveal = () => {
       revealSections.forEach(sec => {
-        const inner = sec.querySelector(':scope > .wrap');
-        if (!inner) return;
+        const wrap = sec.querySelector(':scope > .wrap');
+        if (!wrap) return;
+        /* by default the whole .wrap gets nudged upward to reveal any
+           overflow — but a section can opt a single child (e.g. a tall
+           showcase) into being the only thing that moves, via
+           [data-reveal-inner], so a heading above it (which would
+           otherwise get pushed up behind the fixed nav) stays put */
+        const inner = wrap.querySelector(':scope > [data-reveal-inner]') || wrap;
         inner.style.transform = 'none';
+        sec.style.minHeight = '';
         const style = getComputedStyle(sec);
         const padding = parseFloat(style.paddingTop) + parseFloat(style.paddingBottom);
-        const available = window.innerHeight - padding;
+        let available = window.innerHeight - padding;
+        if (inner !== wrap) {
+          Array.from(wrap.children).forEach(child => {
+            if (child === inner) return;
+            const cs = getComputedStyle(child);
+            available -= child.offsetHeight + parseFloat(cs.marginTop) + parseFloat(cs.marginBottom);
+          });
+        }
         const extra = inner.offsetHeight - available;
         sec._revealTop = sec.offsetTop;
         sec._revealExtra = extra > 0 ? extra + 8 : 0;
         sec._revealInner = inner;
+        /* the next section starts covering this one as soon as its own
+           top comes within one viewport of the top — i.e. right from the
+           start of this section's pin — and closes that gap 1px per 1px
+           of scroll. The nudge only pushes content up until it just
+           touches the bottom of the available space, so the instant the
+           cover starts approaching, it eats into that same content with
+           almost no buffer. Matching the extra dwell to the reveal
+           distance only fixed the timing, not the size, of the window —
+           it was still a sliver a couple hundred px wide inside a much
+           longer scroll. Add a real hold (well over half a screen) after
+           the reveal finishes so there's a wide, easy-to-land-on stretch
+           where the fully-revealed content just sits still before the
+           next section starts sliding over it. */
+        if (sec._revealExtra) {
+          const hold = window.innerHeight * 0.9;
+          sec.style.minHeight = `calc(100dvh + ${sec._revealExtra + hold}px)`;
+        }
       });
     };
     let stackTicking = false;
