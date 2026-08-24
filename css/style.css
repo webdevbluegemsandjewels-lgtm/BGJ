@@ -1051,6 +1051,8 @@ body[data-page="contact"] .footer{
 .footer-social svg{ width:16px; height:16px; }
 .footer-bottom{ display:flex; justify-content:space-between; align-items:center; padding-top:2rem; border-top:1px solid var(--line-soft); font-size:.72rem; color:var(--ivory-dim); flex-wrap:wrap; gap:1rem; }
 .footer-credit{ margin:0; text-align:center; padding:1rem clamp(1.5rem,6vw,4rem) 1.4rem; background:var(--navy-900); border-top:1px solid var(--line-soft); font-size:.68rem; color:var(--ivory-dim); opacity:.7; position:relative; z-index:1000; }
+.footer-credit a{ color:inherit; text-decoration:underline; text-underline-offset:2px; transition:color .3s; }
+.footer-credit a:hover{ color:var(--gold-500); }
 @media(max-width:900px){
   .footer-grid{ grid-template-columns:1fr 1fr; }
 }
