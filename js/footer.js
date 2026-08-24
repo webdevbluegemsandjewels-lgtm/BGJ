@@ -60,9 +60,6 @@ const FOOTER_HTML = `
       <span>&copy; 2026 Blue Gems and Jewels. Built on quality, integrity, reliability, and relationships that last.</span>
       <span>BIS Hallmark Registered &nbsp;&middot;&nbsp; GJEPC Member</span>
     </div>
-    <div class="footer-credit">
-      <span>Developed by Aman Dubal | WebDev@BGJ</span>
-    </div>
   </div>
 </footer>`;
 document.addEventListener('DOMContentLoaded', () => {
