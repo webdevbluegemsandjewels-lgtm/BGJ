@@ -49,15 +49,37 @@
         </div>
         <div class="grid grid-2" style="gap:0 2rem;">
           <div class="field"><label>Email</label><input type="email" name="email" required maxlength="120" placeholder="you@business.com" title="Please enter a valid email address."></div>
-          <div class="field"><label>Phone</label><input type="tel" name="phone" pattern="[0-9+()\-\s]{7,15}" inputmode="tel" placeholder="+91" title="Please enter a valid phone number (7–15 digits, may include +, spaces, ( ) or -)."></div>
+          <div class="field">
+            <label>Phone</label>
+            <div class="field-phone">
+              <select name="phone_code" id="enq-phone-code" aria-label="Country calling code"></select>
+              <input type="tel" name="phone" id="enq-phone" pattern="[0-9\s]{6,14}" inputmode="tel" placeholder="98765 43210" title="Please enter a valid phone number (6–14 digits).">
+            </div>
+          </div>
         </div>
-        <div class="field">
-          <label>I'm Interested In</label>
-          <select name="interest" required>
-            <option>General Enquiry</option>
-            <option>Custom Manufacturing</option>
-            <option>Bulk / Repeat Order Discussion</option>
-          </select>
+        <div class="grid grid-2" style="gap:0 2rem;">
+          <div class="field">
+            <label>Country</label>
+            <select name="country" id="enq-country" required></select>
+          </div>
+          <div class="field">
+            <label>State</label>
+            <select name="state" id="enq-state-select">
+              <option value="">Select state</option>
+            </select>
+            <input type="text" name="state" id="enq-state-text" maxlength="80" placeholder="State / Province" style="display:none;">
+          </div>
+        </div>
+        <div class="grid grid-2" style="gap:0 2rem;">
+          <div class="field"><label>City</label><input type="text" name="city" required maxlength="80" placeholder="Your city"></div>
+          <div class="field">
+            <label>I'm Interested In</label>
+            <select name="interest" required>
+              <option>General Enquiry</option>
+              <option>Custom Manufacturing</option>
+              <option>Bulk / Repeat Order Discussion</option>
+            </select>
+          </div>
         </div>
         <div class="field"><label>Message</label><textarea name="message" required minlength="10" maxlength="1000" placeholder="Tell us about your requirement..." title="Please tell us a bit about your requirement (at least 10 characters)."></textarea></div>
         <button type="submit" class="btn btn-gold" style="border:none; cursor:pointer;">Send Enquiry</button>

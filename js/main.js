@@ -963,6 +963,70 @@ document.addEventListener('DOMContentLoaded', () => {
     }, { threshold: 0.4 });
     counterIo.observe(el);
   });
+  /* ---- contact form: country / state / phone-code ----
+     one shared country list drives three things: the Country select,
+     the State select (India only — free-text elsewhere), and the phone
+     calling-code select, which auto-follows whichever country is picked. */
+  const COUNTRIES = [
+    ['India','IN','+91'],['United States','US','+1'],['United Kingdom','GB','+44'],
+    ['United Arab Emirates','AE','+971'],['Saudi Arabia','SA','+966'],['Qatar','QA','+974'],
+    ['Kuwait','KW','+965'],['Bahrain','BH','+973'],['Oman','OM','+968'],
+    ['Singapore','SG','+65'],['Malaysia','MY','+60'],['Hong Kong','HK','+852'],
+    ['Australia','AU','+61'],['New Zealand','NZ','+64'],['Canada','CA','+1'],
+    ['Germany','DE','+49'],['France','FR','+33'],['Italy','IT','+39'],
+    ['Spain','ES','+34'],['Netherlands','NL','+31'],['Belgium','BE','+32'],
+    ['Switzerland','CH','+41'],['Ireland','IE','+353'],['Portugal','PT','+351'],
+    ['Sweden','SE','+46'],['Norway','NO','+47'],['Denmark','DK','+45'],
+    ['South Africa','ZA','+27'],['Nigeria','NG','+234'],['Kenya','KE','+254'],
+    ['Japan','JP','+81'],['South Korea','KR','+82'],['China','CN','+86'],
+    ['Thailand','TH','+66'],['Indonesia','ID','+62'],['Philippines','PH','+63'],
+    ['Vietnam','VN','+84'],['Sri Lanka','LK','+94'],['Bangladesh','BD','+880'],
+    ['Nepal','NP','+977'],['Pakistan','PK','+92'],['Brazil','BR','+55'],
+    ['Mexico','MX','+52'],['Israel','IL','+972'],['Turkey','TR','+90'],
+    ['Russia','RU','+7'],['Egypt','EG','+20'],['Mauritius','MU','+230']
+  ];
+  const INDIA_STATES = [
+    'Andhra Pradesh','Arunachal Pradesh','Assam','Bihar','Chhattisgarh','Goa','Gujarat',
+    'Haryana','Himachal Pradesh','Jharkhand','Karnataka','Kerala','Madhya Pradesh',
+    'Maharashtra','Manipur','Meghalaya','Mizoram','Nagaland','Odisha','Punjab',
+    'Rajasthan','Sikkim','Tamil Nadu','Telangana','Tripura','Uttar Pradesh',
+    'Uttarakhand','West Bengal','Andaman and Nicobar Islands','Chandigarh',
+    'Dadra and Nagar Haveli and Daman and Diu','Delhi','Jammu and Kashmir',
+    'Ladakh','Lakshadweep','Puducherry'
+  ];
+  const countrySelect = document.getElementById('enq-country');
+  const phoneCodeSelect = document.getElementById('enq-phone-code');
+  const stateSelect = document.getElementById('enq-state-select');
+  const stateText = document.getElementById('enq-state-text');
+  if (countrySelect && phoneCodeSelect && stateSelect && stateText) {
+    countrySelect.innerHTML = COUNTRIES.map(([name, iso2]) =>
+      `<option value="${name}" data-iso="${iso2}">${name}</option>`).join('');
+    phoneCodeSelect.innerHTML = COUNTRIES.map(([name, iso2, dial]) =>
+      `<option value="${dial}" data-iso="${iso2}">${dial}</option>`).join('');
+    INDIA_STATES.forEach(s => stateSelect.insertAdjacentHTML('beforeend', `<option value="${s}">${s}</option>`));
+    const dialByIso = Object.fromEntries(COUNTRIES.map(([, iso2, dial]) => [iso2, dial]));
+    function toggleState(countryName) {
+      const isIndia = countryName === 'India';
+      stateSelect.style.display = isIndia ? '' : 'none';
+      stateText.style.display = isIndia ? 'none' : '';
+      stateSelect.disabled = !isIndia;
+      stateText.disabled = isIndia;
+    }
+    countrySelect.addEventListener('change', () => {
+      const iso = countrySelect.selectedOptions[0]?.dataset.iso;
+      if (iso && dialByIso[iso]) phoneCodeSelect.value = dialByIso[iso];
+      toggleState(countrySelect.value);
+    });
+    phoneCodeSelect.addEventListener('change', () => {
+      const iso = phoneCodeSelect.selectedOptions[0]?.dataset.iso;
+      const match = COUNTRIES.find(([, i]) => i === iso);
+      if (match) countrySelect.value = match[0];
+    });
+    /* default to India regardless of visitor locale */
+    countrySelect.value = 'India';
+    phoneCodeSelect.value = '+91';
+    toggleState(countrySelect.value);
+  }
   /* ---- contact form ----
      emails the enquiry via Web3Forms and logs it to the Supabase
      "enquiries" table. Both need a real key filled in below — see
@@ -980,7 +1044,11 @@ document.addEventListener('DOMContentLoaded', () => {
         full_name: data.get('full_name') || '',
         company: data.get('company') || '',
         email: data.get('email') || '',
+        phone_country_code: data.get('phone_code') || '',
         phone: data.get('phone') || '',
+        country: data.get('country') || '',
+        state: data.get('state') || '',
+        city: data.get('city') || '',
         interest: data.get('interest') || '',
         message: data.get('message') || ''
       };

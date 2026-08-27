@@ -1143,6 +1143,9 @@ body[data-page="contact"] .footer{
 .field input:user-invalid,.field textarea:user-invalid,.field select:user-invalid{ border-color:#b5453f; }
 .field select option{ background:var(--navy-900); }
 .field textarea{ resize:vertical; min-height:110px; }
+.field-phone{ display:flex; gap:.7rem; align-items:flex-end; }
+.field-phone select{ flex:0 0 auto; width:auto; max-width:92px; }
+.field-phone input{ flex:1 1 auto; min-width:0; }
 /* map placeholder */
 .map-block{
   height:340px; border:1px solid var(--line-soft); border-radius:4px; position:relative; overflow:hidden;
